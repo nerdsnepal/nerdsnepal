@@ -6,7 +6,8 @@
 
 */
 
-const { emailValidator, validateUserName } = require("../utilities")
+const PrivilegeModel = require("../models/PrivilegeModel")
+const { emailValidator, validateUserName, isSuperUser } = require("../utilities")
 const AuthMiddleware = (req,res,next)=>{
     const {username,email} = req.body 
     let isEmail =null 
@@ -22,11 +23,38 @@ const AuthMiddleware = (req,res,next)=>{
          req.body.isEmail = isEmail 
          next()
      } catch (err) {
-        res.status(400).json({success:false,error})
-       return res.end()
+       return res.status(400).json({success:false,error})
+     
      }
 
     
+}
+
+/*
+hasPermissionMiddleware: 
+Check the user privilege to do some particular action in the collection
+For example: The employee may or may not have to doing some action in some collection 
+
+
+*/
+
+const hasPermissionMiddleware = (collectionName,action)=>{
+    return async(req,res,next)=>{
+        const {created_by} = req.body
+        const {userId,userType} = req.user
+        if(isSuperUser(userType)){
+            req.hasAccess = true 
+            return next()
+        }
+        try {
+        //   await PrivilegeModel.findOne({
+        //        created_by:created_by
+        //    })
+        } catch (error) {
+            
+        }
+
+    }
 }
 
 module.exports = AuthMiddleware

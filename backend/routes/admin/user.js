@@ -1,6 +1,6 @@
 const UserValidationChecker = require("../../middleware/createUserMiddleware")
 const EmailVerifier = require("../../models/EmailVerifierModel")
-const User = require("../../models/UserModel")
+const User = require("../../models/userModel")
 const { sendVerificationMail } = require("../../services/mail/sendMail")
 const { isEqual, encryptPassword, generateCode, USERTYPE } = require("../../utilities")
 
@@ -20,12 +20,10 @@ router.post("/super-user",UserValidationChecker,async(req,res)=>{
             const emailVerifier = await new EmailVerifier({userId: currentUser,code}).save()
             await sendVerificationMail(email,firstname,code)
             const {confirmPassword,password,...other} =req.body
-            res.status(200).json({success:true,userDetails:other,isSendVerificationMail:emailVerifier!=null?true:false})
-            res.end()
+           return res.status(200).json({success:true,userDetails:other,isSendVerificationMail:emailVerifier!=null?true:false})
         }
     } catch (error) {
-        res.status(201).json({success:false,...error})
-        res.end()
+       return res.status(201).json({success:false,...error})
     }
 })
 

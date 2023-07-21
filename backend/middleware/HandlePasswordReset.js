@@ -1,5 +1,5 @@
-const PasswordReset = require("../models/PasswordResetModel");
-const User = require("../models/UserModel")
+const PasswordReset = require("../models/passwordResetModel");
+const User = require("../models/userModel")
 const { PasswordResetService } = require("../services/otherservices");
 const { isEmpty, isEqual, passwordStrengthChecker, encryptPassword } = require("../utilities");
 const { generateAuthToken } = require("./authToken");
@@ -24,14 +24,11 @@ const HandleUsernamePasswordReset = async(req,res)=>{
         if(!currentUser) throw new  Error("User doesn't exists")
         let serviceResult = await PasswordResetService(isEmail,currentUser)
         if(!serviceResult)  throw new  Error("Unable to serve your request")
-        res.status(200).json({success:true,message:"Password reset code sent"})
-        res.end()
-        return
+       return res.status(200).json({success:true,message:"Password reset code sent"})
     } catch (error) {
         console.log(error);
-        res.status(400).json({success:false,error})
-        res.end()
-        return
+        return res.status(400).json({success:false,error})
+       
     }
 }
 
@@ -46,7 +43,7 @@ const VerifyCode =async (req,res)=>{
         const passwordResetToken = generateAuthToken({date:Date.now(),userId,email:currentUser.email},'12h')
         await PasswordReset.updateOne({userId,resetCode},{isCodeUsed:true,passwordResetToken})
         const cookieOptions = {
-            expires: new Date(Date.now() + 1000 * 60 * 60 * 24*2), // expires in 24 hours
+            expires: new Date(Date.now() + 1000 * 60 * 60 * 24*2), // expires in 48 hours
             httpOnly: true, // prevents JavaScript from accessing the cookie
             secure:true
           };
@@ -56,8 +53,7 @@ const VerifyCode =async (req,res)=>{
     return res.status(422).json({success:false,error:{code:"invalid_code",message:"code doesn't match or expired"}})
     } catch (error) {
         //console.log(error);
-       res.json({success:false,message:"Something went wrong"}) 
-       res.end()
+       return res.json({success:false,message:"Something went wrong"}) 
     }
  
 }
@@ -77,8 +73,7 @@ const ResetPassword = async(req,res)=>{
         let userId = pswdReset.userId
         let userRes= await User.updateOne({_id:userId},{password:await encryptPassword(password)})
        if(!userRes) throw new Error("Error")
-        res.status(200).json({success:true,message:"password changed"}) 
-        return
+       return res.status(200).json({success:true,message:"password changed"}) 
     } catch (err) {
        //console.log(err);
         res.status(422).json({success:false,error}) 

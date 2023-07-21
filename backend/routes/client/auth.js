@@ -4,7 +4,7 @@ email or username and password
 const app  = require("express").Router()
 const AuthMiddleware = require("../../middleware/authMiddleware")
 const { generateAuthToken } = require("../../middleware/authToken")
-const User = require("../../models/UserModel")
+const User = require("../../models/userModel")
 const { comparePassword, isEmpty } = require("../../utilities")
 
 app.post("/email-login",AuthMiddleware,async(req,res)=>{

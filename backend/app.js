@@ -11,7 +11,7 @@ const createAdminRoute = require("./routes/admin/user")
 const userAccountRoute = require("./routes/client/user")
 const userAuthRoute = require("./routes/client/auth")
 const categoryRoute = require("./routes/admin/category")
-const authorizationAdminRoute = require("./routes/admin/authorization")
+
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
@@ -27,7 +27,7 @@ app.use("/admin/create/",createAdminRoute)
 app.use("/account/",userAccountRoute)
 app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)
-app.use("/admin/authoriztion",authorizationAdminRoute)
+
 
 //connection to the mongodb
 mongoose.connect(process.env.MONGO_CONNECTION_STRING).then(()=>{

@@ -5,7 +5,7 @@ const UserValidationChecker = require("../../middleware/createUserMiddleware");
 const EmailVerifier = require("../../models/EmailVerifierModel");
 const User = require("../../models/userModel");
 const { sendVerificationMail } = require("../../services/mail/sendMail");
-const { generateCode, encryptPassword } = require("../../utilities");
+const { generateCode, encryptPassword } = require("../../common/utilities");
 
 const app = require("express").Router()
 

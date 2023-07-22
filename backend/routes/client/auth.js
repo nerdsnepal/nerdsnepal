@@ -5,7 +5,7 @@ const app  = require("express").Router()
 const AuthMiddleware = require("../../middleware/authMiddleware")
 const { generateAuthToken } = require("../../middleware/authToken")
 const User = require("../../models/userModel")
-const { comparePassword, isEmpty } = require("../../utilities")
+const { comparePassword, isEmpty } = require("../../common/utilities")
 
 app.post("/email-login",AuthMiddleware,async(req,res)=>{
      let {username,email,password,isEmail} = req.body

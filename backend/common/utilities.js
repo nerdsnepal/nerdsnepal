@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt")
 const  USERTYPE = {
     DEFAULT:"user",
     EMPLOYEE:"employee",
@@ -39,6 +38,10 @@ const encryptPassword = async(password)=>{
     const saltRounds = 10;
     return await bcrypt.hash(password,saltRounds) 
 }
+const generateHash = (value)=> {
+    let crypto = require("node:crypto") 
+    return crypto.createHash("md5").update(`${value}${new Date().getTime()}`).digest('hex')
+}
 const comparePassword = async (password,hash)=> await  bcrypt.compare(password,hash)
 
 const isEmpty= (value)=> value===undefined||value===""||value===null
@@ -47,4 +50,8 @@ const isSuperUser = (userType)=>userType === USERTYPE.SUPERUSER
 
 
 
-module.exports = {USERTYPE,isSuperUser,isEmpty,comparePassword,emailValidator,validateUserName,passwordStrengthChecker,isEqual,generateCode,encryptPassword}
+
+module.exports = {generateHash,
+    USERTYPE,isSuperUser,isEmpty,comparePassword,
+    emailValidator,validateUserName,passwordStrengthChecker,
+    isEqual,generateCode,encryptPassword}

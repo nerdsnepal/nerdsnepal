@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const { USERTYPE } = require("../utilities");
+const { USERTYPE } = require("../common/utilities");
 
 const UserSchema = new mongoose.Schema(
     {

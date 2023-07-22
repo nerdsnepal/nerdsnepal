@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken")
-const { isEmpty } = require("../utilities")
+const { isEmpty } = require("../common/utilities")
 
 
 

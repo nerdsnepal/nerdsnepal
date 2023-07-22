@@ -11,11 +11,20 @@ const createAdminRoute = require("./routes/admin/user")
 const userAccountRoute = require("./routes/client/user")
 const userAuthRoute = require("./routes/client/auth")
 const categoryRoute = require("./routes/admin/category")
-
+const { uploadAvatar, uploadProductMedia } = require("./middleware/storage")
+const { AuthenticationToken } = require("./middleware/authToken")
+const path = require("path")
+const {compressAvatarAndSave, compressImageAndSave} = require("./common/compress")
+const imageRoute = require("./routes/common/imageRoute")
+const userAvatarRoute = require("./routes/common/userProfile")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
+
+
 // Middleware 
+app.set('assets', path.join(__dirname, 'assets'));
+app.use(express.static(path.join(__dirname, 'assets')));
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -23,11 +32,28 @@ app.use(cookieParser())
 
 
 //handle routes
+app.use('/assets/images',imageRoute)
 app.use("/admin/create/",createAdminRoute)
 app.use("/account/",userAccountRoute)
 app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)
+app.use("/user/profile",userAvatarRoute)
 
+
+
+app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{
+    const files = req.files
+    try {
+        for (let file of files) {
+            const {destination,filename} = file 
+            console.log(file);
+            console.log(await compressImageAndSave(destination,filename));
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    res.send(req.file)
+})
 
 //connection to the mongodb
 mongoose.connect(process.env.MONGO_CONNECTION_STRING).then(()=>{

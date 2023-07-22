@@ -1,6 +1,6 @@
-const PasswordReset = require("../models/passwordResetModel")
-const { generateCode } = require("../utilities")
-const { sendPasswordResetCodeMail } = require("./mail/sendMail")
+const PasswordReset = require("../../models/passwordResetModel")
+const { generateCode } = require("../../common/utilities")
+const { sendPasswordResetCodeMail } = require("../mail/sendMail")
 
 
 const PasswordResetService = async(isEmail,user)=>{   

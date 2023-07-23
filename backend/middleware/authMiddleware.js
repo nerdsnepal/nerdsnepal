@@ -6,8 +6,7 @@
 
 */
 
-const PrivilegeModel = require("../models/PrivilegeModel")
-const { emailValidator, validateUserName, isSuperUser } = require("../common/utilities")
+const { emailValidator, validateUserName, isSuperUser } = require("../common/utils")
 const AuthMiddleware = (req,res,next)=>{
     const {username,email} = req.body 
     let isEmail =null 

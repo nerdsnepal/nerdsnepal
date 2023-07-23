@@ -11,18 +11,23 @@ const createAdminRoute = require("./routes/admin/user")
 const userAccountRoute = require("./routes/client/user")
 const userAuthRoute = require("./routes/client/auth")
 const categoryRoute = require("./routes/admin/category")
-const { uploadAvatar, uploadProductMedia } = require("./middleware/storage")
+const { uploadAvatar, uploadProductMedia } = require("./middleware/uploadMiddleware")
 const { AuthenticationToken } = require("./middleware/authToken")
 const path = require("path")
-const {compressAvatarAndSave, compressImageAndSave} = require("./common/compress")
+const { compressImageAndSave} = require("./common/compress")
 const imageRoute = require("./routes/common/imageRoute")
 const userAvatarRoute = require("./routes/common/userProfile")
+const cors = require("cors")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
 
 
 // Middleware 
+app.use('*',cors({
+    origin:true,
+    credentials:true
+}))
 app.set('assets', path.join(__dirname, 'assets'));
 app.use(express.static(path.join(__dirname, 'assets')));
 app.use(express.json())

@@ -14,8 +14,9 @@ const compressProfileAndSave =   (destination,filename)=>{
         return null
     })
 }
-const compressImageAndSave =   (destination,filename)=>{
+const compressImageAndSave = (destination,filename)=>{
     const path =`${destination}/${filename}`
+    console.log(path);
    return sharp(path).resize(2000)
     .jpeg({ mozjpeg: true,quality:60 })
     .toBuffer()
@@ -25,7 +26,7 @@ const compressImageAndSave =   (destination,filename)=>{
         fs.writeFileSync(newFilePath,res)
         return newFilePath
     }).catch((err)=>{
-        console.log(err);
+        console.log(`compressImageAndSave ${err}`);
         return null
     })
 }

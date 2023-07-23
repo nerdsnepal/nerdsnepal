@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const { USERTYPE } = require("../common/utilities");
+const { USERTYPE } = require("../common/utils");
 
 const UserSchema = new mongoose.Schema(
     {
@@ -12,7 +12,7 @@ const UserSchema = new mongoose.Schema(
         profile:{type:String,require:false, default:"/profile/profile.jpg"},
         address:{type:Object,default:null},
         password:{type:String,require:true},
-        userType:{type:String,require:false,default:USERTYPE.DEFAULT},
+        role:{type:String,require:false,default:USERTYPE.DEFAULT},
         creation_date:{type:Date,require:true,default:Date.now()},
         gender: {type:String,enum:["Male","Female","Other","Prefer not to say"],default:"Prefer not to say"},
         metaData:{type:Object,require:false}

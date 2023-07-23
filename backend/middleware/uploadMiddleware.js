@@ -1,8 +1,9 @@
 // for handling multipart/form-data (for uploading files)
 const multer = require("multer")
 const fs = require("fs")
-const { generateHash } = require("../common/utilities")
+const { generateHash } = require("../common/utils")
 const path = require("path")
+const { compressImageAndSave } = require("../common/compress")
 const rootDir = 'assets'
 const allowedMimeType = [
     "image/jpg","image/jpeg","image/png","image/gif",
@@ -41,7 +42,29 @@ limits:{
 }).array('media')
 
 
+const compressAndReturnUrlMiddleware =async (req,res,next)=>{
+    try {
+    let files = req.file || req.files
+    console.log(Object.prototype.toString.call(files));
+    let url = []
+    if(!files instanceof Array && !Array.isArray(files)){
+        files =[files]
+    }
+    for(let file of files){
+        const {destination,filename} = file
+        let currentUrl = await compressImageAndSave(destination,filename)
+        url.push(currentUrl)
+    }
+
+    req.uploadedUrl = url 
+    next()
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success:false,messagee:"Internal server error"})
+    }
+    
+    
+}
 
 
-
-module.exports = {uploadProfile,uploadProductMedia}
+module.exports = {compressAndReturnUrlMiddleware,uploadProfile,uploadProductMedia}

@@ -1,4 +1,4 @@
-const { emailValidator, validateUserName, isEqual, passwordStrengthChecker } = require("../common/utilities");
+const { emailValidator, validateUserName, isEqual, passwordStrengthChecker } = require("../common/utils");
 const User = require("../models/userModel")
 
 const UserValidationChecker = async(req,res,next) =>{

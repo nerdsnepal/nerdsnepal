@@ -1,5 +1,5 @@
 const PasswordReset = require("../../models/passwordResetModel")
-const { generateCode } = require("../../common/utilities")
+const { generateCode } = require("../../common/utils")
 const { sendPasswordResetCodeMail } = require("../mail/sendMail")
 
 

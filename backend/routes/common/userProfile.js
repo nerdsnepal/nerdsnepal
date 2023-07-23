@@ -1,18 +1,17 @@
 const { checkExistsAndDelete, compressImageAndSave } = require("../../common/compress");
-const { isEmpty } = require("../../common/utilities");
+const { isEmpty } = require("../../common/utils");
 const { AuthenticationToken } = require("../../middleware/authToken");
-const { uploadProfile } = require("../../middleware/storage");
+const { uploadProfile, compressAndReturnUrlMiddleware } = require("../../middleware/uploadMiddleware");
 const userModel = require("../../models/userModel");
 const app = require("express").Router()
 
 
-app.post("/",AuthenticationToken,uploadProfile,async(req,res)=>{
+app.post("/",AuthenticationToken,uploadProfile,compressAndReturnUrlMiddleware,async(req,res)=>{
     let path = ""
     try {
-        const {destination,filename} = req.file
         const {userId} = req.user
-         path = await compressImageAndSave(destination,filename);
-         const {profile} = await userModel.findOne({_id:userId})
+        path = req.uploadedUrl[0]
+        const {profile} = await userModel.findOne({_id:userId})
         const {acknowledged}= await userModel.updateOne({_id:userId},{profile:path})
         if(!acknowledged)throw new Error("Error")
         checkExistsAndDelete(profile)

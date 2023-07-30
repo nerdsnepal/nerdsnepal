@@ -22,7 +22,7 @@ const AuthMiddleware = (req,res,next)=>{
          req.body.isEmail = isEmail 
          next()
      } catch (err) {
-       return res.status(400).json({success:false,error})
+       return res.status(201).json({success:false,error})
      
      }
 

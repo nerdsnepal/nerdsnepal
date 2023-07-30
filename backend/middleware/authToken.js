@@ -7,6 +7,7 @@ const { isEmpty } = require("../common/utils")
 const generateAuthToken = (user,expireIn='48h')=>jwt.sign(user,process.env.SECRET_KEY, { expiresIn: expireIn})
 
 const AuthenticationToken = (req,res,next)=>{
+    console.log(req.cookies);
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1] || req.cookies['token']
     if(isEmpty(token))

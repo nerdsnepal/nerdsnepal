@@ -11,13 +11,15 @@ const createAdminRoute = require("./routes/admin/user")
 const userAccountRoute = require("./routes/client/user")
 const userAuthRoute = require("./routes/client/auth")
 const categoryRoute = require("./routes/admin/category")
-const { uploadAvatar, uploadProductMedia } = require("./middleware/uploadMiddleware")
+const { uploadProductMedia } = require("./middleware/uploadMiddleware")
 const { AuthenticationToken } = require("./middleware/authToken")
 const path = require("path")
 const { compressImageAndSave} = require("./common/compress")
 const imageRoute = require("./routes/common/imageRoute")
 const userAvatarRoute = require("./routes/common/userProfile")
 const cors = require("cors")
+const userModel = require("./models/userModel")
+const storeRoute = require("./routes/admin/store/store")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
@@ -35,10 +37,24 @@ app.use(express.urlencoded({extended:true}))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser())
 
+//root 
+app.get('/',AuthenticationToken,async(req,res)=>{
+    const {userId} = req.user 
+    const  user= await userModel.findOne({_id:userId})
+    user.password = undefined
+    user.address = undefined
+    user.creation_date = undefined
+    res.json({
+        success:true,
+        message:"Authenticated user",
+        user
+    })
+})
 
 //handle routes
 app.use('/assets/images',imageRoute)
 app.use("/admin/create/",createAdminRoute)
+app.use("/store",storeRoute)
 app.use("/account/",userAccountRoute)
 app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)

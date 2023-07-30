@@ -4,6 +4,7 @@ const User = require("../../models/userModel")
 const { sendVerificationMail } = require("../../services/mail/sendMail")
 const { isEqual, encryptPassword, generateCode, USERTYPE } = require("../../common/utils")
 
+
 const router = require("express").Router()
 
 router.post("/super-user",UserValidationChecker,async(req,res)=>{
@@ -13,7 +14,7 @@ router.post("/super-user",UserValidationChecker,async(req,res)=>{
         if(!isEqual(apiKey,process.env.SUPER_USER_CREATE_AUTH_KEY))throw new Error("Invalid apikey")
         const currentUser= await new  User({firstname:firstname, middlename:middlename,lastname:lastname,
             username:username,email:email,password:await encryptPassword(password),metaData:{},
-            userType:USERTYPE.SUPERUSER
+            role:USERTYPE.SUPERUSER
         }).save()
         if(currentUser){
             const code = generateCode(6)
@@ -26,6 +27,9 @@ router.post("/super-user",UserValidationChecker,async(req,res)=>{
        return res.status(201).json({success:false,...error})
     }
 })
+
+
+
 
 
 module.exports = router

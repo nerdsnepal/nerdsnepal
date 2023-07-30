@@ -7,7 +7,7 @@ const { generateAuthToken } = require("../../middleware/authToken")
 const User = require("../../models/userModel")
 const { comparePassword, isEmpty } = require("../../common/utils")
 
-app.post("/email-login",AuthMiddleware,async(req,res)=>{
+app.post("/admin/email-login",AuthMiddleware,async(req,res)=>{
    
      let {username,email,password,isEmail} = req.body
     // console.log(req.body);
@@ -32,8 +32,7 @@ app.post("/email-login",AuthMiddleware,async(req,res)=>{
                 secure:true,
                 sameSite: "none",
               }; 
-              currentUser.password = undefined
-             
+            currentUser.password = undefined
             res.cookie('token',token,cookieOptions)
             res.setHeader('Access-Control-Allow-Credentials',true)
             res.status(200).json({success:true,isLogin:true,message:"Successully login",token,user:currentUser})

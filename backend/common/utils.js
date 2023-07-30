@@ -7,6 +7,16 @@ const  USERTYPE = {
     SUPERUSER:"superuser",
     COSTUMER:"costumer"
 }
+const SUBSCRIPTIONMODEL = {
+    Monthly:"Monthly",
+    Annual:"Annual",
+    Freemium:"Freemium"
+}
+const SUBSCRIPTIONLEVEL = {
+    Basic:"Basic",
+    Medium:"Medium",
+    Premium:"Premium"
+}
 
 const emailValidator= (email)=>email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
 const validateUserName  = (username)=>username.match( /^[a-zA-Z0-9_]{5,29}$/)
@@ -56,4 +66,7 @@ const isSuperUser = (userType)=>userType === USERTYPE.SUPERUSER
 module.exports = {generateHash,
     USERTYPE,isSuperUser,isEmpty,comparePassword,
     emailValidator,validateUserName,passwordStrengthChecker,
-    isEqual,generateCode,encryptPassword}
+    isEqual,generateCode,encryptPassword,
+    SUBSCRIPTIONLEVEL,
+    SUBSCRIPTIONMODEL
+}

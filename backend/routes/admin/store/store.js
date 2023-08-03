@@ -1,4 +1,4 @@
-const { USERTYPE } = require("../../../common/utils")
+const { USERTYPE, SUBSCRIPTIONLEVEL, SUBSCRIPTIONMODEL } = require("../../../common/utils")
 const { AuthenticationToken } = require("../../../middleware/authToken")
 const userModel = require("../../../models/userModel")
 const CheckSuperAdmin = require("../middleware/checkSuperAdmin")
@@ -13,7 +13,14 @@ router.post("/create",AuthenticationToken,CheckSuperAdmin,CreateStoreValidatorMi
 
     try {
         //create a store 
-    await new StoreModel({created_by: userId,name,merchantId}).save()
+    await new StoreModel({created_by: userId,name,merchantId,subscriptionDetails:{
+        paymentMethod:"None",
+        subscribed_date:Date.now(),
+        expire_on:null,
+        isExipre:false,
+        subscriptionLevel:SUBSCRIPTIONLEVEL.Basic,
+        subscriptionModel:SUBSCRIPTIONMODEL.Freemium
+    }}).save()
     // update user to merchant
     if(userId!==merchantId){
     await userModel.updateOne({_id:merchantId},{role:USERTYPE.MERCHANT}) 
@@ -24,9 +31,6 @@ router.post("/create",AuthenticationToken,CheckSuperAdmin,CreateStoreValidatorMi
         console.log(error);
         res.status(200).json({success:false,error:"Failed to create store"})
     }
-
-
-
 })
 
 /*get all the stores information 

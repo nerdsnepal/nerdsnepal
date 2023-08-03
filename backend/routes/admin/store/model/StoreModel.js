@@ -35,12 +35,12 @@ const StoreModelSchema = mongoose.Schema({
     subscriptionDetails:[{
         type:Object,
         properties:{
-            paymentMethod:{type:String},
-            subscribed_date:{type:Date},
-            expire_on:{type:Date},
-            isExpire:{type:Boolean,require:false,default:false},
-            subscriptionLevel:{type:String,default:SUBSCRIPTIONLEVEL.Basic},
-            subscriptionModel:{type:String,default:SUBSCRIPTIONMODEL.Freemium}
+            paymentMethod:{type:String,default:"None"},
+            subscribed_date:{type:Date,default:Date.now(),require:true},
+            expire_on:{type:Date,default:null},
+            isExpire:{type:Boolean,default:false},
+            subscriptionLevel:{type:String,enum:[SUBSCRIPTIONLEVEL.Basic,SUBSCRIPTIONLEVEL.Medium,SUBSCRIPTIONLEVEL.Premium],default:SUBSCRIPTIONLEVEL.Basic},
+            subscriptionModel:{type:String,enum:[SUBSCRIPTIONMODEL.Annual,SUBSCRIPTIONMODEL.Monthly,SUBSCRIPTIONMODEL.Freemium],default:SUBSCRIPTIONMODEL.Freemium}
         }
 
     }]

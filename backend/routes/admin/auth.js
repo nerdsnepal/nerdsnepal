@@ -25,7 +25,7 @@ app.post("/admin/email-login",AuthMiddleware,async(req,res)=>{
         }
         if(await comparePassword(password,currentUser.password)){
             let token = generateAuthToken({userId:currentUser._id,username:currentUser.username,
-               email:currentUser.email,isAdmin:false,userType:currentUser.userType})
+               email:currentUser.email,isAdmin:false,role:currentUser.role})
                 const cookieOptions = {
                 expires: new Date(Date.now() + 1000 * 60 * 60 * 24*2), // expires in 24 hours
                 httpOnly: true, // prevents JavaScript from accessing the cookie

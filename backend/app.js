@@ -20,6 +20,7 @@ const userAvatarRoute = require("./routes/common/userProfile")
 const cors = require("cors")
 const userModel = require("./models/userModel")
 const storeRoute = require("./routes/admin/store/store")
+const searchRoute = require("./routes/common/search")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
@@ -59,7 +60,7 @@ app.use("/account/",userAccountRoute)
 app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)
 app.use("/user/profile",userAvatarRoute)
-
+app.use("/search/",searchRoute)
 
 
 app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{

@@ -19,7 +19,10 @@ const UserSchema = new mongoose.Schema(
     }
 )
 
-
-
+UserSchema.index({
+    firstname:'text',
+    lastname:'text',
+    username:'text'
+})
 
 module.exports = mongoose.model("user",UserSchema)

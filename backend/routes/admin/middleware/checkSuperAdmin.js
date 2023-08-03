@@ -7,11 +7,11 @@ it call the next() request
 */
 
 const CheckSuperAdmin =async(req,res,next)=>{
-    const {userId}= req.user 
+    const {role}= req.user 
     // first check the user is super-admin or not 
     try {
-        const user = await userModel.findOne({_id:userId})
-        if(user.role===USERTYPE.SUPERUSER){
+        //const user = await userModel.findOne({_id:userId})
+        if(role===USERTYPE.SUPERUSER){
             next()
         }else{
             throw new Error("You're not authorized user")

@@ -16,7 +16,7 @@ const CreateStoreValidatorMiddleware =async (req,res,next)=>{
         error.push("Store name must be unique")
     }
     if(error.length>0){
-        return res.status(422).json({success:false,error})
+        return res.status(200).json({success:false,error})
     }else{
         next()
     }

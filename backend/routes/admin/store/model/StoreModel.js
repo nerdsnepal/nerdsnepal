@@ -11,7 +11,7 @@ const StoreModelSchema = mongoose.Schema({
     domainName:{type:String,require:false,unique:false},
     emails:{type:Array},
     merchantId:{type:Schema.Types.ObjectId,require:true,unique:false,ref:"users"},
-    logo:{type:String},
+    logo:{type:String,default:null},
     status:{type:Boolean,require:true,default:false},
     websiteLayout:[],
     address:{type:Object,properties:{

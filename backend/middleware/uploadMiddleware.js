@@ -37,13 +37,14 @@ const uploadProfile = multer({ storage: storage("images/profile") ,
 
 const uploadProductMedia = multer({storage:storage("images/media"),
 limits:{
-    files:25,
+    files:7,
 }
 }).array('media')
 
 
 const compressAndReturnUrlMiddleware =async (req,res,next)=>{
     try {
+        
     let files = req.file || req.files
     console.log(Object.prototype.toString.call(files));
     let url = []
@@ -59,7 +60,7 @@ const compressAndReturnUrlMiddleware =async (req,res,next)=>{
     req.uploadedUrl = url 
     next()
     } catch (error) {
-        console.log(error);
+     
         res.status(500).json({success:false,messagee:"Internal server error"})
     }
     

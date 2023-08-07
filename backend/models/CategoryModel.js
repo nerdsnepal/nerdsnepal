@@ -12,6 +12,8 @@ const CategorySchema = mongoose.Schema({
                 }
             }
     ],
+    status:{type:Boolean,default:false,require:true},
+    storeId:{type:Schema.Types.ObjectId,ref:"stores",required:false},    
     created_by:{type:Schema.Types.ObjectId,ref:"users",required:true},
     updated_by:{type:Schema.Types.ObjectId,ref:"users",required:true},
     updated_date:{type:Date,default:Date.now()},

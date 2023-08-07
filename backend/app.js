@@ -21,6 +21,7 @@ const cors = require("cors")
 const userModel = require("./models/userModel")
 const storeRoute = require("./routes/admin/store/store")
 const searchRoute = require("./routes/common/search")
+const uploadRoute = require("./routes/upload/uploadMedia")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
@@ -61,7 +62,7 @@ app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)
 app.use("/user/profile",userAvatarRoute)
 app.use("/search/",searchRoute)
-
+app.use("/upload",uploadRoute)
 
 app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{
     const files = req.files

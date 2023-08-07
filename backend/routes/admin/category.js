@@ -2,20 +2,23 @@ const { isEmpty } = require("../../common/utils");
 const { AuthenticationToken } = require("../../middleware/authToken");
 const { uploadProductMedia, compressAndReturnUrlMiddleware } = require("../../middleware/uploadMiddleware");
 const Category = require("../../models/CategoryModel");
-
 const app = require("express").Router()
 
-app.post("/",AuthenticationToken,uploadProductMedia,compressAndReturnUrlMiddleware,async(req,res)=>{
+
+
+app.post("/",AuthenticationToken,async(req,res)=>{
     try {
-        const {name} =req.body
+        const {name,status,urls} =req.body
+        const date = Date.now()
         const {userId} =req.user 
         let images = []
-        for(const url of req.uploadedUrl){
-            images.push({url,uploaded_by:userId})
+        for(const url of urls){
+            images.push({url,uploaded_by:userId,uploaded_at:date})
         }
-       await Category({name,images,created_by:userId,updated_by:userId}).save()
+       await Category({name,images,status,created_by:userId,updated_by:userId}).save()
         return res.status(200).json({status:true,message:"Category created"})
     } catch (error) {
+        console.log(error);
        return res.status(500).json({status:false,message:"Internal server error"})
     }
 });

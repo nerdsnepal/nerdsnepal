@@ -8,6 +8,7 @@ app.get("/:dirname/:filename",(req,res)=>{
         return res.status(422).json({status:false,message:"resource not found"})
     }
     const createReadStream = fs.createReadStream(filePath)
+    res.status(200)
     res.writeHead(200,{'Content-Type':'image/*'})
     createReadStream.pipe(res)
 })

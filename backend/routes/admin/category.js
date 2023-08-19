@@ -8,18 +8,18 @@ const app = require("express").Router()
 
 app.post("/",AuthenticationToken,async(req,res)=>{
     try {
-        const {name,status,urls} =req.body
+        const {name,status,urls,subCategory,storeId} =req.body
         const date = Date.now()
         const {userId} =req.user 
         let images = []
         for(const url of urls){
             images.push({url,uploaded_by:userId,uploaded_at:date})
         }
-       await Category({name,images,status,created_by:userId,updated_by:userId}).save()
-        return res.status(200).json({status:true,message:"Category created"})
+       await Category({name,images,status,subCategory,created_by:userId,updated_by:userId,storeId}).save()
+        return res.status(200).json({success:true,message:"Category added"})
     } catch (error) {
         console.log(error);
-       return res.status(500).json({status:false,message:"Internal server error"})
+       return res.status(500).json({success:false,message:"Something went wrong"})
     }
 });
 
@@ -50,10 +50,24 @@ app.put("/",AuthenticationToken,uploadProductMedia,compressAndReturnUrlMiddlewar
 
 
 app.get("/",async(req,res)=>{
-    console.log(req.cookies);
-   let categories = await Category.find({})
-//   res.setHeader('Access-Control-Allow-Origin','*')
-   res.status(200).json({status:true,categories})
+    try {
+        let {status,storeId} = req.query
+        let categories = null 
+        
+        if(isEmpty(status) ||isEmpty(storeId) ){
+            categories = await Category.find({})
+        }else if(status==='true'){
+            console.log(req.query);
+            categories = await Category.find({status:true,storeId:{$in:[null,storeId]}})
+        }else{
+            categories = await Category.find({status:false})
+        }
+         
+        return res.status(200).json({success:true,categories})
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success:false,error})
+    }
 })
 app.delete("/",AuthenticationToken,async(req,res)=>{
     

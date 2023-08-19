@@ -15,6 +15,7 @@ const app = require("express").Router()
 app.post("/",AuthenticationToken,uploadProductMedia,compressAndReturnUrlMiddleware,async(req,res)=>{
     try{
         const {storeId} = req.body
+        console.log(storeId);
         const {userId} = req.user 
         const currentUrls = req.uploadedUrl
         let urls = []

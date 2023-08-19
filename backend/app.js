@@ -22,6 +22,7 @@ const userModel = require("./models/userModel")
 const storeRoute = require("./routes/admin/store/store")
 const searchRoute = require("./routes/common/search")
 const uploadRoute = require("./routes/upload/uploadMedia")
+const productRoute = require("./routes/admin/products")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
@@ -60,6 +61,7 @@ app.use("/store",storeRoute)
 app.use("/account/",userAccountRoute)
 app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)
+app.use('/product/',productRoute)
 app.use("/user/profile",userAvatarRoute)
 app.use("/search/",searchRoute)
 app.use("/upload",uploadRoute)

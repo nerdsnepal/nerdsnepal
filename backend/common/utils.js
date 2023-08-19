@@ -56,7 +56,7 @@ const generateHash = (value)=> {
 }
 const comparePassword = async (password,hash)=> await  bcrypt.compare(password,hash)
 
-const isEmpty= (value)=> value===undefined||value===""||value===null
+const isEmpty= (value)=> value===undefined||value===""||value==='null' ||value===null
 
 const isSuperUser = (userType)=>userType === USERTYPE.SUPERUSER
 

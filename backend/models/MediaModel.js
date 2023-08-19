@@ -13,7 +13,7 @@ const MediaSchema = mongoose.Schema({
         }
         
     ],
-    storeId:{type:String,ref:"stores",require:false},
+    storeId:{type:String,require:false},
     userId:{type:Schema.Types.ObjectId,ref:"users",require:true},
 
 })

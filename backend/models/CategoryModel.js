@@ -2,6 +2,7 @@ const { default: mongoose, Schema } = require("mongoose");
 
 const CategorySchema = mongoose.Schema({
     name:{type:String,require:true},
+    subCategory:{type:Array,require:false},
     images:[
             {
                 type:Object,
@@ -13,10 +14,15 @@ const CategorySchema = mongoose.Schema({
             }
     ],
     status:{type:Boolean,default:false,require:true},
-    storeId:{type:Schema.Types.ObjectId,ref:"stores",required:false},    
+    storeId:{type:String,required:false,default:""},    
     created_by:{type:Schema.Types.ObjectId,ref:"users",required:true},
     updated_by:{type:Schema.Types.ObjectId,ref:"users",required:true},
     updated_date:{type:Date,default:Date.now()},
     creation_date:{type:Date,default:Date.now()}   
 })
+
+CategorySchema.index({
+    storeId:String
+})
+
 module.exports = mongoose.model("category",CategorySchema)

@@ -17,7 +17,11 @@ const StoreModelSchema = mongoose.Schema({
     address:{type:Object,properties:{
         country:{type:String},
         postalCode:{type:Number},
-        street:{type:String},
+        addressLine1: { type: String },
+        addressLine2: { type: String },
+        state:{type:String},
+        district:{type:String},
+        city:{type:String},
         geocoordinate:{type:Object,properties:{
             latitude:{type:String},
             longitude :{type:String}
@@ -43,7 +47,32 @@ const StoreModelSchema = mongoose.Schema({
             subscriptionModel:{type:String,enum:[SUBSCRIPTIONMODEL.Annual,SUBSCRIPTIONMODEL.Monthly,SUBSCRIPTIONMODEL.Freemium],default:SUBSCRIPTIONMODEL.Freemium}
         }
 
-    }]
+    }],
+    stockLocation:[
+        {
+            type: Object,
+            properties: {
+                _id:{type:String,default:new Date().getMilliseconds(),require:true},
+                created_by:{type:Schema.Types.ObjectId,ref:"users"},
+                updated_by:{type:Schema.Types.ObjectId,ref:"users"},
+                creation_date:{type:Date,require:true,default:Date.now()},
+                updated_date:{type:Date,},
+                country: { type: String,default:"" },
+                state: { type: String,default:"" }, 
+                city: { type: String,default:"" },
+                postalCode: { type: String,default:"" },
+                addressLine1: { type: String ,default:"" },
+                addressLine2: { type: String ,default:""},
+                geocoordinate: {
+                    type: Object,
+                    properties: {
+                        latitude: { type: String ,default:"" },
+                        longitude: { type: String,default:'' }
+                    }
+                }
+            }
+        }
+    ]
 })
 
 module.exports = mongoose.model("store",StoreModelSchema)

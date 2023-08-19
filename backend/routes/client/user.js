@@ -6,6 +6,7 @@ const EmailVerifier = require("../../models/EmailVerifierModel");
 const User = require("../../models/userModel");
 const { sendVerificationMail } = require("../../services/mail/sendMail");
 const { generateCode, encryptPassword } = require("../../common/utils");
+const { AuthenticationToken } = require("../../middleware/authToken");
 
 const app = require("express").Router()
 
@@ -32,6 +33,7 @@ Used to reset password of the user
 Reset Password By: username or email 
 
 */
+
 app.post("/reset-password",AuthMiddleware,HandleEmailPasswordReset,HandleUsernamePasswordReset)
 app.post("/verify/reset-code",AuthMiddleware,VerifyCode)
 app.put("/rest-password/change",ResetPassword)

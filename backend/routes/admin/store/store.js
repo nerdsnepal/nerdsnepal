@@ -2,10 +2,15 @@ const { USERTYPE, SUBSCRIPTIONLEVEL, SUBSCRIPTIONMODEL } = require("../../../com
 const { AuthenticationToken } = require("../../../middleware/authToken")
 const userModel = require("../../../models/userModel")
 const CheckSuperAdmin = require("../middleware/checkSuperAdmin")
+const { StoreAuthorization } = require("./middleware/check-authorization")
 const { CreateStoreValidatorMiddleware } = require("./middleware/middleware")
+const { StockLocationRequiredFieldChecker } = require("./middleware/store-location")
+
 const StoreModel = require("./model/StoreModel")
 
 const router = require("express").Router()
+
+
 // for creating store to the user 
 router.post("/create",AuthenticationToken,CheckSuperAdmin,CreateStoreValidatorMiddleware,async(req,res)=>{
     const {userId} = req.user 
@@ -39,15 +44,21 @@ only accessible to the super user
 */
 router.get("/",AuthenticationToken,async(req,res)=>{
     const {userId,role}= req.user
-    console.log(req.user); 
     try {
         let stores = null
-        console.log(role); 
         if(role===USERTYPE.SUPERUSER){
             stores = await StoreModel.find()
         }else{
             stores = await StoreModel.find({merchantId:userId})
         }
+        stores.map((store)=>{
+            //store.created_by=undefined
+            //store.emails= undefined 
+            //store.websiteLayout = undefined
+            //store.paymentMethod = undefined
+            //store.subscriptionDetails = undefined 
+
+        })
         res.status(200).json({success:true,stores})
     } catch (error) {
         return res.status(500).json({
@@ -70,6 +81,39 @@ router.get("/:merchantId",AuthenticationToken,CheckSuperAdmin,async(req,res)=>{
         }) 
     }
 })
+
+//
+router.post("/stocklocation",AuthenticationToken,StoreAuthorization,StockLocationRequiredFieldChecker,async(req,res)=>{
+    const {country,state,city,
+        postalCode,addressLine1,
+        addressLine2,geocoordinate,storeId} = req.body 
+    const {userId,role} = req.user 
+    let canAccess = false  
+    try {
+            //everything accessible for merchant to the store 
+            if(role===USERTYPE.MERCHANT) canAccess = true 
+            else{
+                canAccess = true 
+                //check the permission to access this section for the employee
+            }
+            if(canAccess){
+                //insert the new store location 
+                const stockLocation = {created_by:userId,
+                    country,state,city,postalCode,addressLine1,addressLine2,geocoordinate
+                }
+                await StoreModel.updateOne({_id:storeId}, { $push: { stockLocation: stockLocation}} )
+                return res.status(200).json({success:true,message:"Saved"})
+                
+            }else{
+                return res.status(422).json({success:false,message:"You aren't authorized to access this section"})
+            }
+    } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+
+})
+
+
 
 
 module.exports = router

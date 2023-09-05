@@ -30,14 +30,13 @@ app.get("/users/:value",async(req,res)=>{
 
 
 })
-app.get('/user',AuthenticationToken,async(req,res)=>{
+app.get('/user',async(req,res)=>{
    try {
     let {userIds} = req.query
     userIds = userIds?.split(',')
     if(userIds && isEmpty(userIds[0])){
         throw new Error("Something went wrong")
     }
-    console.log(userIds);
     let users = await userModel.find({_id:{$in:userIds}})
     users = users?.map((user)=>{
         user.password= undefined
@@ -52,5 +51,6 @@ app.get('/user',AuthenticationToken,async(req,res)=>{
         return res.status(500).json({success:false,error:"Something went wrong"})
    }
 })
+
 
 module.exports = app 

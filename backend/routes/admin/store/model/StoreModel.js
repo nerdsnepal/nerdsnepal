@@ -72,6 +72,16 @@ const StoreModelSchema = mongoose.Schema({
                 }
             }
         }
+    ],
+    updateHistory:[
+        {
+            type:Object,
+            properties:{
+                updated_by:{type:Schema.Types.ObjectId,require:true,unique:false,ref:"users"},
+                updated_date:{type:Date.now(),require:true},
+                remarks:{type:String}
+            }
+        }
     ]
 })
 

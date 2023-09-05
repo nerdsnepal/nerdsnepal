@@ -10,7 +10,8 @@ const ProductSchema = mongoose.Schema({
             type:Object,
             properties:{
                 updated_by:{type:Schema.Types.ObjectId,require:true,ref:"users"},
-                updated_at:{type:Date,default:Date.now()}
+                updated_at:{type:Date,default:Date.now()},
+                remarks:{type:String}
             }
         }
     ],

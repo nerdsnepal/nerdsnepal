@@ -12,6 +12,9 @@ const StoreAuthorization =async(req,res,next)=>{
     send the unauthorize response 
     */
     try {
+        if(req.user.role===USERTYPE.SUPERUSER){
+           return  next()
+        }
         if(isEmpty(storeId)){
             return res.status(401).json({success:false,error:"StoreId is required"})
         }
@@ -28,7 +31,6 @@ const StoreAuthorization =async(req,res,next)=>{
        return res.status(422).json({success:false,error:"Unauthorized user"})
     
     } catch (error) {
-        console.log(error);
         return res.status(500).json({success:false,error:error})
     }
 }

@@ -23,6 +23,7 @@ const storeRoute = require("./routes/admin/store/store")
 const searchRoute = require("./routes/common/search")
 const uploadRoute = require("./routes/upload/uploadMedia")
 const productRoute = require("./routes/admin/products")
+const {CheckAPIAcessToken} = require("./middleware/check_api_token")
 // number of cpu or core available 
 const numCPUS = os.cpus().length
 
@@ -56,6 +57,7 @@ app.get('/',AuthenticationToken,async(req,res)=>{
 
 //handle routes
 app.use('/assets/images',imageRoute)
+app.use(CheckAPIAcessToken)
 app.use("/admin/create/",createAdminRoute)
 app.use("/store",storeRoute)
 app.use("/account/",userAccountRoute)
@@ -63,7 +65,7 @@ app.use("/auth/",userAuthRoute)
 app.use("/admin/category",categoryRoute)
 app.use('/product/',productRoute)
 app.use("/user/profile",userAvatarRoute)
-app.use("/search/",searchRoute)
+app.use("/search",searchRoute)
 app.use("/upload",uploadRoute)
 
 app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{

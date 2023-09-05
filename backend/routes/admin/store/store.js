@@ -1,15 +1,14 @@
-const { USERTYPE, SUBSCRIPTIONLEVEL, SUBSCRIPTIONMODEL } = require("../../../common/utils")
+
+const { USERTYPE, SUBSCRIPTIONLEVEL, SUBSCRIPTIONMODEL, isEmpty } = require("../../../common/utils")
 const { AuthenticationToken } = require("../../../middleware/authToken")
 const userModel = require("../../../models/userModel")
 const CheckSuperAdmin = require("../middleware/checkSuperAdmin")
 const { StoreAuthorization } = require("./middleware/check-authorization")
 const { CreateStoreValidatorMiddleware } = require("./middleware/middleware")
 const { StockLocationRequiredFieldChecker } = require("./middleware/store-location")
-
 const StoreModel = require("./model/StoreModel")
 
 const router = require("express").Router()
-
 
 // for creating store to the user 
 router.post("/create",AuthenticationToken,CheckSuperAdmin,CreateStoreValidatorMiddleware,async(req,res)=>{
@@ -68,6 +67,27 @@ router.get("/",AuthenticationToken,async(req,res)=>{
     }
 })
 
+router.get("/storeId",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {storeId} = req.query 
+    if(isEmpty(storeId)){
+        return res.status(422).json({success:false,message:"StoreId is not valid"})
+    }
+    try {
+        const store = await StoreModel.findOne({_id:storeId})
+        store.websiteLayout=undefined 
+        return res.status(200).json({
+            success:store!==null,store
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success:false,
+            message:"Internal Server Error"
+        })
+    }
+})
+
+
 router.get("/:merchantId",AuthenticationToken,CheckSuperAdmin,async(req,res)=>{
     const merchantId = req.params.merchantId
     try {
@@ -88,21 +108,45 @@ router.post("/stocklocation",AuthenticationToken,StoreAuthorization,StockLocatio
         postalCode,addressLine1,
         addressLine2,geocoordinate,storeId} = req.body 
     const {userId,role} = req.user 
-    let canAccess = false  
+    let canAccess = true  
     try {
-            //everything accessible for merchant to the store 
-            if(role===USERTYPE.MERCHANT) canAccess = true 
-            else{
-                canAccess = true 
-                //check the permission to access this section for the employee
+        if(canAccess){
+            //insert the new store location 
+            const stockLocation = {created_by:userId,
+                country,state,city,postalCode,addressLine1,addressLine2,geocoordinate
+            }
+            await StoreModel.updateOne({_id:storeId}, { $push: { stockLocation: stockLocation}} )
+            return res.status(200).json({success:true,message:"Saved"})   
+            }else{
+                return res.status(422).json({success:false,message:"You aren't authorized to access this section"})
+            }
+    } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+
+})
+
+router.patch("/stocklocation",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {stockLocation,storeId} = req.body 
+    const {userId,role} = req.user 
+    let canAccess = true   
+    try {
+            //check required fields 
+            let isvalid = true 
+            for (const location of stockLocation) {
+                if(isEmpty(location.country) && isEmpty(location.city) && isEmpty(location.state)){
+                    isvalid = false 
+                    break
+                }
+            }
+            if(!isvalid){
+                return res.status(422).json({success:false,error:"Country, state, city are required fields."})
             }
             if(canAccess){
                 //insert the new store location 
-                const stockLocation = {created_by:userId,
-                    country,state,city,postalCode,addressLine1,addressLine2,geocoordinate
-                }
-                await StoreModel.updateOne({_id:storeId}, { $push: { stockLocation: stockLocation}} )
-                return res.status(200).json({success:true,message:"Saved"})
+                const updateHistory = {updated_by:userId,updated_date:Date.now(),remarks:"Stock location changed into "+stockLocation}
+                await StoreModel.updateOne({_id:storeId}, {  stockLocation: stockLocation,$push:{updateHistory:updateHistory}} )
+                return res.status(200).json({success:true,message:"Updated"})
                 
             }else{
                 return res.status(422).json({success:false,message:"You aren't authorized to access this section"})
@@ -113,6 +157,71 @@ router.post("/stocklocation",AuthenticationToken,StoreAuthorization,StockLocatio
 
 })
 
+
+// update 
+router.patch("/name",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {userId,role} = req.user 
+    const {name,storeId} = req.body  
+    if(isEmpty(name)){
+        return res.status(422).json({
+            success:false,message:"Store name can't be empty"
+        })
+    }
+    if(name.length<=3){
+        return res.status(422).json({
+            success:false,message:"Store name length must be greater than or equal to 3"
+        })
+    }
+    try {
+        const duplicatename = await StoreModel.findOne({name:name.trim().toLowerCase()}) 
+        if(duplicatename){
+            return res.status(422).status({
+                success:false,
+                message:"Store name already exists"
+            })
+        }
+        const updateHistory = {updated_by:userId,updated_date:Date.now(),remarks:"Name changed into "+name}
+        const result = await StoreModel.updateOne({_id:storeId},{name:name.trim(),$push:{updateHistory:updateHistory}})
+        return res.status(200).json({success:result!=null,result})
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success:false,error})
+    }
+})
+
+router.patch("/emails",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {emails,storeId} = req.body 
+    const {userId,role} = req.user 
+    let canAccess = true   
+    try {
+            if(canAccess){
+                //insert the new store location 
+                const updateHistory = {updated_by:userId,updated_date:Date.now(),remarks:"Email changed into "+emails}
+                await StoreModel.updateOne({_id:storeId}, {  emails: emails,$push:{updateHistory:updateHistory}} )
+                return res.status(200).json({success:true,message:"Updated"})
+                
+            }else{
+                return res.status(422).json({success:false,message:"You aren't authorized to access this section"})
+            }
+    } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+
+})
+
+
+router.patch("/status",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {userId,role} = req.user 
+    const {status,storeId} = req.body  
+    try {
+        const updateHistory = {updated_by:userId,updated_date:Date.now(),remarks:"Status changed into "+status}
+        const result = await StoreModel.updateOne({_id:storeId},{status:status,$push: { updateHistory: updateHistory}})
+        return res.status(200).json({success:result!=null,result})
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success:false,error})
+    }
+})
 
 
 

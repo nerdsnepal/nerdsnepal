@@ -1,7 +1,9 @@
-const { isEmpty } = require("../../common/utils");
+const { isEmpty, USERTYPE } = require("../../common/utils");
 const { AuthenticationToken } = require("../../middleware/authToken");
 const { uploadProductMedia, compressAndReturnUrlMiddleware } = require("../../middleware/uploadMiddleware");
+const CategoryModel = require("../../models/CategoryModel");
 const Category = require("../../models/CategoryModel");
+const { StoreAuthorization } = require("./store/middleware/check-authorization");
 const app = require("express").Router()
 
 
@@ -54,13 +56,16 @@ app.get("/",async(req,res)=>{
         let {status,storeId} = req.query
         let categories = null 
         
-        if(isEmpty(status) ||isEmpty(storeId) ){
+        if(isEmpty(status) && isEmpty(storeId) ){
             categories = await Category.find({})
         }else if(status==='true'){
-            console.log(req.query);
             categories = await Category.find({status:true,storeId:{$in:[null,storeId]}})
-        }else{
+        }else if(status==='false'){
             categories = await Category.find({status:false})
+        }else{
+            if(!isEmpty(storeId)){
+                categories = await Category.find({storeId:{$in:[null,storeId]}})
+            }
         }
          
         return res.status(200).json({success:true,categories})
@@ -69,8 +74,27 @@ app.get("/",async(req,res)=>{
         return res.status(500).json({success:false,error})
     }
 })
-app.delete("/",AuthenticationToken,async(req,res)=>{
-    
+app.delete("/",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {storeId,_id}= req.body
+    const {role} = req.user 
+    if(isEmpty(_id)){
+        return res.status(422).json({success:false,message:"CategoryId is required"})
+    }
+    try{
+        let result = null
+        if(role===USERTYPE.MERCHANT){
+            result = await CategoryModel.deleteOne({storeId,_id})
+          }else if(role===USERTYPE.EMPLOYEE){
+           //check for permission
+           result = await CategoryModel.deleteOne({storeId,_id})
+          }
+          const {acknowledged} = result
+          
+        return res.status(200).json({success:acknowledged,message:acknowledged?"Deleted":"Failed to delete"})
+    }catch(error){
+        console.log(error);
+        return res.status(500).json({success:false,error})
+    } 
 })
 
 module.exports = app 

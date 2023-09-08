@@ -9,7 +9,7 @@ const UserValidationChecker = async(req,res,next) =>{
     if(!password)error.push("password field can't be empty")
     if(!confirmPassword)error.push("confirmPassword field can't be empty")
     //if there is any field is empty then it will response immediately 
-    if(error.length>0)return  res.status(422).json({success:false,error:errorIsEmpty})
+    if(error.length>0)return  res.status(422).json({success:false,error:error})
      
     if(!emailValidator(email)) error.push("Invalid email")
     if(!validateUserName(username)) error.push("Invalid username")

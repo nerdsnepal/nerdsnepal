@@ -19,7 +19,7 @@ const SUBSCRIPTIONLEVEL = {
 }
 
 const emailValidator= (email)=>email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-const validateUserName  = (username)=>username.match( /^[a-zA-Z0-9_]{5,29}$/)
+const validateUserName  = (username)=>username.match( /^[a-zA-Z0-9_]{5,29}$/);
 
 /*
     This function return integer value as a  strength of the password 
@@ -54,11 +54,11 @@ const generateHash = (value)=> {
     let crypto = require("node:crypto") 
     return crypto.createHash("md5").update(`${value}${new Date().getTime()}`).digest('hex')
 }
-const comparePassword = async (password,hash)=> await  bcrypt.compare(password,hash)
+const comparePassword = async (password,hash)=> await  bcrypt.compare(password,hash);
 
-const isEmpty= (value)=> value===undefined||value===""||value==='null' ||value===null
+const isEmpty= (value)=> value===undefined||value===""||value==='null' ||value===null;
 
-const isSuperUser = (userType)=>userType === USERTYPE.SUPERUSER
+const isSuperUser = (userType)=>userType === USERTYPE.SUPERUSER;
 
 
 
@@ -68,5 +68,6 @@ module.exports = {generateHash,
     emailValidator,validateUserName,passwordStrengthChecker,
     isEqual,generateCode,encryptPassword,
     SUBSCRIPTIONLEVEL,
-    SUBSCRIPTIONMODEL
+    SUBSCRIPTIONMODEL,
+    
 }

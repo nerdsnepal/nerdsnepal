@@ -59,23 +59,22 @@ const VerifyCode =async (req,res)=>{
 }
 
 const ResetPassword = async(req,res)=>{
-    const {password,confimPassword} =req.body
+    const {password,confirmPassword,passwordResetToken} =req.body
     let error =[]
     try {
-        if(isEmpty(password)) error.push({"code":"password_empty","message":"field can't be empty"})
-        if(isEmpty(confimPassword)) error.push({"code":"confimPassword_empty","message":"field can't be empty"})
+        if(isEmpty(password)) error.push("Passowrd is required field")
+        if(isEmpty(confirmPassword)) error.push("Confirm password is required field")
         if(error.length>0)throw new Error("Error")
-        if(!isEqual(password,confimPassword)) error.push({code:"not_matched",message:"password doesn't match"})
-        if(passwordStrengthChecker(password)<1)error.push({code:"password_weak",message:"weak password"})
+        if(!isEqual(password,confirmPassword)) error.push("password doesn't match")
+        if(passwordStrengthChecker(password)<1)error.push("weak password")
         if(error.length>0)throw new Error("Error")
-        let value = req.cookies['passwordResetToken']
-        let pswdReset =await PasswordReset.findOne({passwordResetToken:value})
+        let pswdReset =await PasswordReset.findOne({passwordResetToken})
         let userId = pswdReset.userId
         let userRes= await User.updateOne({_id:userId},{password:await encryptPassword(password)})
        if(!userRes) throw new Error("Error")
-       return res.status(200).json({success:true,message:"password changed"}) 
+       return res.status(200).json({success:true,message:"Password changed"}) 
     } catch (err) {
-       //console.log(err);
+        error.push("Something went wrong")
         res.status(422).json({success:false,error}) 
     }
     

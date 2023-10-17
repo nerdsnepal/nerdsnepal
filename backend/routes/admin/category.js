@@ -82,11 +82,17 @@ app.delete("/",AuthenticationToken,StoreAuthorization,async(req,res)=>{
     }
     try{
         let result = null
+        console.log(role);
         if(role===USERTYPE.MERCHANT){
             result = await CategoryModel.deleteOne({storeId,_id})
           }else if(role===USERTYPE.EMPLOYEE){
            //check for permission
            result = await CategoryModel.deleteOne({storeId,_id})
+          }else if(role===USERTYPE.SUPERUSER){
+            result = await CategoryModel.deleteOne({_id})
+          }
+          if(!result){
+            return res.status(200).json({success:false,message:"Failed to delete"})
           }
           const {acknowledged} = result
           

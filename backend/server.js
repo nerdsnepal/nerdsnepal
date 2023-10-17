@@ -12,18 +12,21 @@ const userAccountRoute = require("./routes/client/user");
 const userAuthRoute = require("./routes/client/auth");
 const categoryRoute = require("./routes/admin/category");
 const { uploadProductMedia } = require("./middleware/uploadMiddleware");
-const { AuthenticationToken } = require("./middleware/authToken")
+const { AuthenticationToken } = require("./middleware/authToken");
 const path = require("path");
 const { compressImageAndSave} = require("./common/compress");
 const imageRoute = require("./routes/common/imageRoute");
 const userAvatarRoute = require("./routes/common/userProfile");
 const cors = require("cors");
-const userModel = require("./models/userModel");
+const rootRoute = require("./routes/client/root")
+const productClientRoute = require("./routes/client/products")
 const storeRoute = require("./routes/admin/store/store");
 const searchRoute = require("./routes/common/search");
 const uploadRoute = require("./routes/upload/uploadMedia");
 const productRoute = require("./routes/admin/products");
+const trendingProductRoute = require("./routes/client/trending.products")
 const {CheckAPIAcessToken} = require("./middleware/check_api_token");
+const { metaData } = require("./middleware/meta-data");
 // number of cpu or core available 
 const numCPUS = os.cpus().length;
 
@@ -40,39 +43,31 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(metaData)
 
-//root 
-app.get('/',AuthenticationToken,async(req,res)=>{
-    const {userId} = req.user;
-    const  user= await userModel.findOne({_id:userId});
-    user.password = undefined;
-    user.address = undefined;
-    user.creation_date = undefined;
-    res.json({
-        success:true,
-        message:"Authenticated user",
-        user
-    });
-});
 
 //handle routes
 app.use('/assets/images',imageRoute);
 app.use(CheckAPIAcessToken);
+//root 
+app.use('/',rootRoute)
 app.use("/admin/create/",createAdminRoute);
 app.use("/store",storeRoute);
 app.use("/account/",userAccountRoute);
 app.use("/auth/",userAuthRoute);
 app.use("/admin/category",categoryRoute);
 app.use('/product/',productRoute)
+app.use("/products",productClientRoute)
 app.use("/user/profile",userAvatarRoute);
 app.use("/search",searchRoute);
 app.use("/upload",uploadRoute);
+app.use("/trending/",trendingProductRoute)
 
 app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{
     const files = req.files;
     try {
         for (let file of files) {
-            const {destination,filename} = file ;
+            const {destination,filename} = file;
             console.log(file);
             console.log(await compressImageAndSave(destination,filename));
         }

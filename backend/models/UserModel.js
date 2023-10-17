@@ -3,9 +3,7 @@ const { USERTYPE } = require("../common/utils");
 
 const UserSchema = new mongoose.Schema(
     {
-        firstname:{type:String,require:true},
-        middlename:{type:String,require:false,default:""},
-        lastname:{type:String,require:true},
+        name:{type:String,require:true},
         username:{type:String,require:true,unique:true},
         email:{type:String,require:true,unique:true},
         isVerified:{type:Boolean,default:false},
@@ -20,9 +18,7 @@ const UserSchema = new mongoose.Schema(
 )
 
 UserSchema.index({
-    firstname:'text',
-    lastname:'text',
-    username:'text'
+   name:'text'
 })
 
 module.exports = mongoose.model("user",UserSchema)

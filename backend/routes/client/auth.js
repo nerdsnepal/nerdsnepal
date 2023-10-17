@@ -27,13 +27,12 @@ app.post("/email-login",AuthMiddleware,async(req,res)=>{
             let token = generateAuthToken({userId:currentUser._id,username:currentUser.username,
                email:currentUser.email,role:currentUser.role})
                 const cookieOptions = {
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24*2), // expires in 24 hours
+                expires: new Date(Date.now() + 1000 * 60 * 60 * 24), 
                 httpOnly: true, // prevents JavaScript from accessing the cookie
                 secure:true,
                 sameSite: "none",
               }; 
               currentUser.password = undefined
-             
             res.cookie('token',token,cookieOptions)
             res.setHeader('Access-Control-Allow-Credentials',true)
             res.status(200).json({success:true,isLogin:true,message:"Successully login",token,user:currentUser})

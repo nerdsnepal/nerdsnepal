@@ -4,7 +4,7 @@ const { default: mongoose, Schema } = require("mongoose");
 const ProductSchema = mongoose.Schema({
     storeId:{type:Schema.Types.ObjectId,require:true,ref:"stores"},
     created_by:{type:Schema.Types.ObjectId,require:true,ref:"users"},
-    created_at:{type:Date,default:Date.now()},
+    created_at:{type:Date,default:Date.now},
     updated:[
         {
             type:Object,
@@ -53,7 +53,11 @@ const ProductSchema = mongoose.Schema({
         sku:{type:String,default:null},
         isExpire:{type:Boolean,default:false},
         expireDate:{type:Date,default:null}
-    }
+    },
+    sales_count:{type:Number,default:0},
+    returns_count:{type:Number,default:0},
+    rating:{type:Number,default:0,min:0,max:5},
+    views_count:{type:Number,default:0}
 
 })
 ProductSchema.index({

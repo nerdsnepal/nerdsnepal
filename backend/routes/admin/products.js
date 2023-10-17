@@ -1,3 +1,4 @@
+const { checkExistsAndDelete } = require("../../common/compress")
 const { addTotalQuantityForProduct, removeSensativeContent } = require("../../common/products")
 const { USERTYPE, isEmpty } = require("../../common/utils")
 const { AuthenticationToken } = require("../../middleware/authToken")
@@ -186,6 +187,33 @@ app.patch('/price',AuthenticationToken,StoreAuthorization,async(req,res)=>{
         })
         return res.status(200).json({success:acknowledged,message:acknowledged?"Updated price":"Failed to update"})
     } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+})
+
+app.patch('/media',AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    let {mediaUrls,deletePath,storeId,productId} = req.body 
+    const {userId} = req.user 
+    const canAccess = true 
+    try {
+        if(mediaUrls.length===0){
+            throw new Error("MediaUrls can't be empty")
+        }
+        if(!canAccess){
+            return res.status(401).json({success:false,message:"Unauthozied"})
+        }
+        const updateHistory = {updated_by:userId,updated_at:Date.now(),remarks:"Updated mediaUrls into "+mediaUrls.toString()}
+        const {acknowledged} =await  productModel.updateOne({_id:productId,storeId:storeId},{
+            mediaUrls:mediaUrls,$push:{updated:updateHistory}
+        })
+        if(acknowledged){
+            for(const path of deletePath){
+                checkExistsAndDelete(path)
+            }
+        }
+        return res.status(200).json({success:acknowledged,message:acknowledged?"Updated media":"Failed to update"})
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({success:false,error})
     }
 })

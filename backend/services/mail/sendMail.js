@@ -33,7 +33,7 @@ const sendVerificationMail = async(to,firstname,code)=>{
     <h2>${code}</h2>
     <p>If you did not register with us, please ignore this email.</p>
     <p>Thank you,</p>
-    <p>Your Website Team</p>
+    <p>Your ${process.env.APP_NAME} Team</p>
     
     `
   return await sendMail(subject,to,html)
@@ -50,11 +50,29 @@ const sendPasswordResetCodeMail = async(to,firstname,code)=>{
     <p>The code will only be valid for 5 minutes. If you do not reset your password within 5 minutes, you will need to start the process again.</p>
     <p>If you did not request a password reset, please disregard this email.</p>
     <p>Thank you</p>
-    <p>Your Website Team</p>
+    <p>Your ${process.env.APP_NAME} Team</p>
     `
   return await sendMail(subject,to,html)
 
 }
+const sendPasswordResetLink = async(to,firstname,token)=>{
+        const subject = "Password Reset Link";
+        const currentTime = new Date().toLocaleString(); // Format the date and time
+        const websiteAddress = `https://${process.env.DOMAIN_NAME}.com`; // Replace with your actual website address
+        const resetLink = `${websiteAddress}/reset-password?token=${token}`;
+        const html = `
+          <p><h3>Hi ${firstname},<h3></p>
+          <p>This email is to inform you that a password reset request was made for your account at <a href="${websiteAddress}">${websiteAddress}</a>. The request was made at <strong>${currentTime}</strong>.</p>
+          <p>To reset your password, please click on the following link:</p>
+          <p><a href="${resetLink}">${resetLink}</a></p>
+          <p>The link will only be valid for 5 minutes. If you do not reset your password within 5 minutes, you will need to start the process again.</p>
+          <p>If you did not request a password reset, please disregard this email.</p>
+          <p>Thank you,</p>
+          <b>Your ${process.env.APP_NAME} Team</b>
+        `;
+      
+        return await sendMail(subject, to, html);
+}
 
 
-module.exports = {sendMail,sendVerificationMail,sendPasswordResetCodeMail}
+module.exports = {sendMail,sendVerificationMail,sendPasswordResetCodeMail,sendPasswordResetLink}

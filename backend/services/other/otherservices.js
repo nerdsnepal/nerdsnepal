@@ -1,18 +1,24 @@
 const PasswordReset = require("../../models/passwordResetModel")
 const { generateCode } = require("../../common/utils")
-const { sendPasswordResetCodeMail } = require("../mail/sendMail")
+const { sendPasswordResetCodeMail, sendPasswordResetLink } = require("../mail/sendMail")
 
 
-const PasswordResetService = async(isEmail,user)=>{   
+const PasswordResetService = async(isEmail,user,isLink=false)=>{   
     try {
          //generate code 
-        let genCode = generateCode(6)
+        const genCode = generateCode(isLink?12:6)
+        const timestamp =Date.now();
+        const token = genCode+'.'+timestamp+'.'+user._id;
          await PasswordReset({
             userId:user,
             resetThrough:isEmail?"email":"username",
-            resetCode:genCode
+            resetCode:isLink?token:genCode
         }).save()
-        await sendPasswordResetCodeMail(user.email,user.firstname,genCode)
+        if(isLink){
+            await sendPasswordResetLink(user.email,user.name,token)
+        }else{
+            await sendPasswordResetCodeMail(user.email,user.name,genCode)
+        }
         return  Promise.resolve(true)
     } catch (error) {
         console.log(error);

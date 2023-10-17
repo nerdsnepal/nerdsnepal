@@ -1,7 +1,9 @@
-const { default: mongoose } = require("mongoose")
-const { AuthenticationToken } = require("../../middleware/authToken")
+
+const {  VerifyTokenAndGetUser } = require("../../middleware/authToken")
 const userModel = require("../../models/userModel")
 const { isEmpty } = require("../../common/utils")
+const userSearchModel = require("../../models/user.search.model")
+const { searchProducts } = require("../client/controller/search")
 
 const app = require("express").Router()
 
@@ -51,6 +53,31 @@ app.get('/user',async(req,res)=>{
         return res.status(500).json({success:false,error:"Something went wrong"})
    }
 })
+
+//search for products  
+app.get("/products",VerifyTokenAndGetUser,async(req,res)=>{
+    try {
+     const {q} = req.query 
+     const {userId} = req.user
+
+     if(isEmpty(q)){
+        throw new Error("Query can't be empty")
+     }
+     
+     await userSearchModel({userId,query:q,metaData:req.meta}).save()
+     const products = await searchProducts(q)
+     return res.status(200).json({
+        success:true,
+        data:products
+     })
+     
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success:false,error:"Internal server error"})
+    }
+
+})
+
 
 
 module.exports = app 

@@ -1,13 +1,13 @@
-const sharp = require("sharp")
-const fs = require("fs")
+const sharp = require("sharp");
+const fs = require("fs");
 const compressProfileAndSave =   (destination,filename)=>{
-    const path =`${destination}/${filename}`
+    const path =`${destination}/${filename}`;
    return sharp(path).resize(500)
     .jpeg({ mozjpeg: true ,quality:100})
     .toBuffer()
     .then((res)=>{
         fs.unlinkSync(path)
-        fs.writeFileSync(path,res)
+        fs.writeFileSync(path,res);
         return path
     }).catch((err)=>{
         console.log(err);
@@ -15,8 +15,7 @@ const compressProfileAndSave =   (destination,filename)=>{
     })
 }
 const compressImageAndSave = (destination,filename)=>{
-    const path =`${destination}/${filename}`
-    console.log(path);
+    const path =`${destination}/${filename}`;
    return sharp(path).resize(2000)
     .jpeg({ mozjpeg: true,quality:60 })
     .toBuffer()
@@ -26,15 +25,13 @@ const compressImageAndSave = (destination,filename)=>{
         fs.writeFileSync(newFilePath,res)
         return newFilePath
     }).catch((err)=>{
-        console.log(`compressImageAndSave ${err}`);
-        return null
+        return null;
     })
 }
 const checkExistsAndDelete = (path) =>{
     if(fs.existsSync(path)){
-        return fs.unlinkSync(path)
+        return fs.unlinkSync(path);
     }
-    console.log("not exists");
-    return false
+    return false;
 }
 module.exports = {checkExistsAndDelete,compressProfileAndSave,compressImageAndSave}

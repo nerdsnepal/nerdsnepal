@@ -4,7 +4,7 @@ const productModel = require("../../../models/productModel");
 /*Search Products according to the name,description, category name,subcategory, seo title and descriptions */
 exports.searchProducts=async(query)=> {
     try {
-       query= query.replace(/[^a-zA-Z0-9 ]/g, "")
+       query= query.replace(/[^a-zA-Z0-9- ]/g, "")
        console.log(query);
       let products = await productModel.find({
         $or: [

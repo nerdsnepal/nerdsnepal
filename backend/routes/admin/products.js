@@ -147,6 +147,51 @@ app.patch('/name',AuthenticationToken,StoreAuthorization,async(req,res)=>{
         return res.status(500).json({success:false,error})
     }
 })
+//update description 
+app.patch('/description',AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {description,storeId,productId} = req.body 
+    const {userId} = req.user 
+    const canAccess = true 
+    try {
+        if(isEmpty(description)){
+            return res.status(422).json({success:false,message:"Description  is required"})
+        }
+        if(!canAccess){
+            return res.status(401).json({success:false,message:"Unauthozied"})
+        }
+        const updateHistory = {updated_by:userId,updated_at:Date.now(),remarks:"Updated description into "+description}
+        const {acknowledged} =await  productModel.updateOne({_id:productId,storeId:storeId},{
+            description,$push:{updated:updateHistory}
+        })
+        return res.status(200).json({success:acknowledged,message:acknowledged?"Updated":"Failed to update"})
+    } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+})
+//update seo 
+app.patch('/seo',AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {description,title,storeId,productId} = req.body 
+    
+    const seo ={description,title}
+    console.log(seo);
+    const {userId} = req.user 
+    const canAccess = true 
+    try {
+        if(!canAccess){
+            return res.status(401).json({success:false,message:"Unauthozied"})
+        }
+        const updateHistory = {updated_by:userId,updated_at:Date.now(),remarks:"Updated seo into "+JSON.stringify(seo)}
+        const {acknowledged} =await  productModel.updateOne({_id:productId,storeId:storeId},{
+            seo,$push:{updated:updateHistory}
+        })
+        return res.status(200).json({success:acknowledged,message:acknowledged?"Updated":"Failed to update"})
+    } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+})
+
+
+
 app.patch('/status',AuthenticationToken,StoreAuthorization,async(req,res)=>{
     const {status,storeId,productId} = req.body 
     const {userId} = req.user 

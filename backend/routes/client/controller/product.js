@@ -57,3 +57,21 @@ exports.getAllProductByStoreId =async ({userId,status=true,storeId})=>{
     }
     return await productModel.find({status,storeId}).sort({ created_at: -1 }).limit(15).exec()
 }
+//get product by category
+exports.findProductsByCategory = async (categoryName, subcategoryName='',userId) => {
+    try {
+        const categoryFilter = {
+            status:true,
+            $or: [
+                { 'category.name': categoryName },
+               { 'category.subcategory': { $in: subcategoryName.split(',') } }
+            ]
+        };
+      const products = await productModel.find(categoryFilter)
+      console.log(products);
+      return products;
+    } catch (error) {
+      console.log('Error finding products:', error);
+      throw error;
+    }
+  };

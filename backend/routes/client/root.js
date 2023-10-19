@@ -4,7 +4,7 @@ const { addTotalQuantityForProduct, minMax } = require("../../common/products")
 const { removeAttribute } = require("../../common/user.hide.secrete")
 const { isEmpty } = require("../../common/utils")
 const { VerifyTokenAndGetUser } = require("../../middleware/authToken")
-const {  getAllCategoryByStatus, getAllCategoryById } = require("./controller/category")
+const {  getAllCategoryByStatus } = require("./controller/category")
 const { getAllProductsyStatus, getProductById } = require("./controller/product")
 const { addUserVisit } = require("./controller/user.visits")
 
@@ -67,6 +67,24 @@ app.get("/v2/product",VerifyTokenAndGetUser,async(req,res)=>{
          return res.status(500).json({success:false,error:"Internal server error"})
     }
 })
+//get all the category 
+app.get("/v2/category",VerifyTokenAndGetUser,async(req,res)=>{
+    try {
+        const {userId} = req.user 
+        let categories =await getAllCategoryByStatus({userId})
+        categories = removeAttribute( categories,['created_by','updated_by','updated_date','creation_date','__v','status'])
+        return res.status(200).json({
+            success:true,
+            data:categories
+        })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({success:false,error:"Internal server error"})
+    }
+
+})
+
 
 
 

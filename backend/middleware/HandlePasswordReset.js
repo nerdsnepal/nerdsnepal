@@ -58,6 +58,7 @@ const VerifyCode =async (req,res)=>{
  
 }
 
+
 const ResetPassword = async(req,res)=>{
     const {password,confirmPassword,passwordResetToken} =req.body
     let error =[]

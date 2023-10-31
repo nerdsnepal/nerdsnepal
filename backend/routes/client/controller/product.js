@@ -68,7 +68,6 @@ exports.findProductsByCategory = async (categoryName, subcategoryName='',userId)
             ]
         };
       const products = await productModel.find(categoryFilter)
-      console.log(products);
       return products;
     } catch (error) {
       console.log('Error finding products:', error);

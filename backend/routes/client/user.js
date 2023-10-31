@@ -1,5 +1,5 @@
 
-const { HandleEmailPasswordReset, HandleUsernamePasswordReset, VerifyCode, ResetPassword } = require("../../middleware/HandlePasswordReset");
+const { HandleEmailPasswordReset, HandleUsernamePasswordReset, VerifyCode, ResetPassword, EmailVerifyCode } = require("../../middleware/HandlePasswordReset");
 const AuthMiddleware = require("../../middleware/authMiddleware");
 const UserValidationChecker = require("../../middleware/createUserMiddleware");
 const EmailVerifier = require("../../models/EmailVerifierModel");
@@ -10,6 +10,7 @@ const userModel = require("../../models/userModel");
 const { PasswordResetService } = require("../../services/other/otherservices");
 const passwordResetModel = require("../../models/passwordResetModel");
 const { generateAuthToken } = require("../../middleware/authToken");
+
 
 const app = require("express").Router()
 
@@ -36,9 +37,43 @@ Used to reset password of the user
 Reset Password By: username or email 
 
 */
+app.post("/send-verification-code",async(req,res)=>{
+    
+    const {email} = req.body;
+    try {
+        const currentUser= await userModel.findOne({email:email})
+        if(currentUser){
+            const code = generateCode(6)
+            const emailVerifier = await new EmailVerifier({userId: currentUser,code}).save()
+            await sendVerificationMail(email,currentUser.username,code)
+           return res.status(200).json({success:true,isSendVerificationMail:emailVerifier!=null?true:false,message:emailVerifier!=null?"Email verification code sent.":"Failed"})
+        }
+    } catch (error) {
+       return res.status(201).json({success:false,error:error.message})
+    }
+})
 
 app.post("/reset-password",AuthMiddleware,HandleEmailPasswordReset,HandleUsernamePasswordReset)
 app.post("/verify/reset-code",AuthMiddleware,VerifyCode)
+//to verify email address
+app.post("/verify/email-code",async(req,res)=>{
+    const {email,code}= req.body
+    try {
+    const currentUser= await userModel.findOne({email:email})
+    const currentDate =Date.now()
+    const result =await EmailVerifier.findOne({userId:currentUser._id,code,expire_date:{$gte:currentDate}})
+    if(result){
+        await userModel.updateOne({email},{isVerified:true});
+       return res.status(200).json({success:true,message:"Your email address has been verified."})
+    }
+    return res.status(422).json({success:false,message:"Oops. The verification code seems to be incorrect"})
+    } catch (error) {
+        //console.log(error);
+       return res.json({success:false,message:"Something went wrong"}) 
+    }
+})
+
+
 app.patch("/reset-password/change",ResetPassword)
 app.get('/send-reset-link',async(req,res)=>{
     const {email} = req.query
@@ -84,6 +119,19 @@ app.get('/verify-code',async(req,res)=>{
             isExpire:expire,
             resetToken:expire?null:resetToken
         })
+    }
+})
+
+app.get("/user-email",async(req,res)=>{
+    try {
+        const {email}= req.query;
+        if(await User.findOne({email:email})){
+            return res.status(200).json({status:true,message:"Found!!!"});
+        }else{
+            throw new Error("User not found");
+        }
+    } catch (error) {
+        return res.status(422).json({status:false,error:error.message})
     }
 })
 

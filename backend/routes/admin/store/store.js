@@ -1,5 +1,6 @@
 
 const { USERTYPE, SUBSCRIPTIONLEVEL, SUBSCRIPTIONMODEL, isEmpty } = require("../../../common/utils")
+const Store = require("../../../controller/store")
 const { AuthenticationToken } = require("../../../middleware/authToken")
 const userModel = require("../../../models/userModel")
 const CheckSuperAdmin = require("../middleware/checkSuperAdmin")
@@ -223,6 +224,6 @@ router.patch("/status",AuthenticationToken,StoreAuthorization,async(req,res)=>{
     }
 })
 
-
+router.get("/v2/storeId",Store.getStoreById)
 
 module.exports = router

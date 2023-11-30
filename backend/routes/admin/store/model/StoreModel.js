@@ -14,6 +14,7 @@ const StoreModelSchema = mongoose.Schema({
     logo:{type:String,default:null},
     status:{type:Boolean,require:true,default:false},
     websiteLayout:[],
+    description:{type:String,default:""},
     address:{type:Object,properties:{
         country:{type:String},
         postalCode:{type:Number},

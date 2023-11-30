@@ -1,5 +1,5 @@
-const { removeAttribute } = require("../../../common/user.hide.secrete");
-const productModel = require("../../../models/productModel");
+const { removeAttribute } = require("../common/user.hide.secrete");
+const productModel = require("../models/productModel");
 
 /*Search Products according to the name,description, category name,subcategory, seo title and descriptions */
 exports.searchProducts=async(query)=> {

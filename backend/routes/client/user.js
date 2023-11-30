@@ -9,7 +9,9 @@ const { generateCode, encryptPassword, url } = require("../../common/utils");
 const userModel = require("../../models/userModel");
 const { PasswordResetService } = require("../../services/other/otherservices");
 const passwordResetModel = require("../../models/passwordResetModel");
-const { generateAuthToken } = require("../../middleware/authToken");
+const { generateAuthToken, AuthenticationToken } = require("../../middleware/authToken");
+const UserC = require("../../controller/user_controller");
+
 
 
 const app = require("express").Router()
@@ -31,6 +33,7 @@ app.post("/create-user",UserValidationChecker,async(req,res)=>{
        return res.status(201).json({success:false,...error})
     }
 })
+app.get('/user',AuthenticationToken,UserC.getUser)
 
 /*
 Used to reset password of the user
@@ -134,5 +137,6 @@ app.get("/user-email",async(req,res)=>{
         return res.status(422).json({status:false,error:error.message})
     }
 })
+app.post("/address",AuthenticationToken,UserC.addAddress);
 
 module.exports = app

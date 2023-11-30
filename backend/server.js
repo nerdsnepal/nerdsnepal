@@ -48,7 +48,7 @@ app.use(metaData)
 
 //handle routes
 app.use('/assets/images',imageRoute);
-app.use(CheckAPIAcessToken);
+//app.use(CheckAPIAcessToken);
 //root 
 app.use('/',rootRoute)
 app.use("/admin/create/",createAdminRoute);
@@ -62,6 +62,7 @@ app.use("/user/profile",userAvatarRoute);
 app.use("/search",searchRoute);
 app.use("/upload",uploadRoute);
 app.use("/trending/",trendingProductRoute)
+
 
 app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{
     const files = req.files;

@@ -1,4 +1,4 @@
-const userVisitsModel = require("../../../models/user.visits.model")
+const userVisitsModel = require("../models/user.visits.model")
 
 
 exports.addUserVisit = ({userId,productId,meta})=>{

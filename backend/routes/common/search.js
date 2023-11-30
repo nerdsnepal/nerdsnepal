@@ -3,7 +3,7 @@ const {  VerifyTokenAndGetUser } = require("../../middleware/authToken")
 const userModel = require("../../models/userModel")
 const { isEmpty } = require("../../common/utils")
 const userSearchModel = require("../../models/user.search.model")
-const { searchProducts } = require("../client/controller/search")
+const { searchProducts } = require("../../controller/search")
 
 const app = require("express").Router()
 

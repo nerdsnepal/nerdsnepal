@@ -3,8 +3,9 @@ const { default: mongoose } = require("mongoose")
 const { addTotalQuantityForProduct } = require("../../common/products")
 const { removeAttribute } = require("../../common/user.hide.secrete")
 const { VerifyTokenAndGetUser } = require("../../middleware/authToken")
-const { getAllProductByStoreId, findProductsByCategory } = require("./controller/product")
-const { storeById } = require("./controller/store")
+const { getAllProductByStoreId, findProductsByCategory } = require("../../controller/product")
+const { storeById } = require("../../controller/store")
+const Store = require("../../controller/store")
 
 const app = require("express").Router()
 
@@ -16,7 +17,7 @@ app.get("/",VerifyTokenAndGetUser,async(req,res)=>{
         if(storeId===undefined || !mongoose.isValidObjectId(storeId)){
             return res.status(500).json({success:false,error:"Invalid store id"})
         }
-        let store =await storeById({storeId})
+        let store =await Store.storeById({storeId})
         let products =await getAllProductByStoreId({userId,storeId})
         products = removeAttribute(products,['created_by','returns_count','sales_count','created_at','updated','costPrice','__v','views_count'])
         products = addTotalQuantityForProduct(products)

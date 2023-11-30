@@ -4,9 +4,9 @@ const { addTotalQuantityForProduct, minMax } = require("../../common/products")
 const { removeAttribute } = require("../../common/user.hide.secrete")
 const { isEmpty } = require("../../common/utils")
 const { VerifyTokenAndGetUser } = require("../../middleware/authToken")
-const {  getAllCategoryByStatus } = require("./controller/category")
-const { getAllProductsyStatus, getProductById } = require("./controller/product")
-const { addUserVisit } = require("./controller/user.visits")
+const {  getAllCategoryByStatus } = require("../../controller/category")
+const { getAllProductsyStatus, getProductById } = require("../../controller/product")
+const { addUserVisit } = require("../../controller/user.visits")
 
 
 

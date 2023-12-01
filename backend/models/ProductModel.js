@@ -41,6 +41,7 @@ const ProductSchema = mongoose.Schema({
         title:{type:String,require:false,default:""},
         description:{type:String,require:false,default:''}
     },
+    seriesId:{type:Schema.Types.ObjectId,require:true,ref:"series",default:null},
     category:{
         name:{type:String,default:""},
         subcategory:{type:Array,default:[]}

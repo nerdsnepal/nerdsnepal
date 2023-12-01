@@ -6,9 +6,12 @@ class ProductService {
         return await productModel.find({storeId:storeId});
     }
     async getCategoryByStoreId({storeId}){
-        return await CategoryModel.find({storeId});
+        return await CategoryModel.find({storeId:{$in:[null,storeId]},status:true});
     }
-
+    
+    async getAllProductsBySeriesId({seriesId}){
+        return await productModel.find({seriesId});
+    }
 
 }
 

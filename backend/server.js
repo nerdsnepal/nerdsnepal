@@ -24,6 +24,7 @@ const storeRoute = require("./routes/admin/store/store");
 const searchRoute = require("./routes/common/search");
 const uploadRoute = require("./routes/upload/uploadMedia");
 const productRoute = require("./routes/admin/products");
+const adminSeriesRoute = require("./routes/admin/series");
 const trendingProductRoute = require("./routes/client/trending.products")
 const {CheckAPIAcessToken} = require("./middleware/check_api_token");
 const { metaData } = require("./middleware/meta-data");
@@ -52,6 +53,7 @@ app.use('/assets/images',imageRoute);
 //root 
 app.use('/',rootRoute)
 app.use("/admin/create/",createAdminRoute);
+app.use("/admin/series",adminSeriesRoute)
 app.use("/store",storeRoute);
 app.use("/account/",userAccountRoute);
 app.use("/auth/",userAuthRoute);

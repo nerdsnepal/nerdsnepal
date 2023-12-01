@@ -7,7 +7,7 @@ const AddProductMiddleware = (req,res,next)=>{
         const {userId} = req.user 
         const {storeId,name,description,price,mediaUrls,
             status,inventory,tax,costPrice,variants,
-            seo,category,
+            seo,category,seriesId
         }= req.body 
         let product = {}
         if(isEmpty(name)){
@@ -47,6 +47,7 @@ const AddProductMiddleware = (req,res,next)=>{
          product.mediaUrls = mediaUrls 
          product.price = price 
          product.inventory = inventory
+         product.seriesId= seriesId
          if(costPrice)product.costPrice = costPrice 
          
          if(seo){

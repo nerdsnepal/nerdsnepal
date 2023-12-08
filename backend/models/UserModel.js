@@ -10,6 +10,16 @@ const UserSchema = new mongoose.Schema(
         profile:{type:String,require:false, default:"/profile/profile.jpg"},
         password:{type:String,require:true},
         role:{type:String,require:false,default:USERTYPE.DEFAULT},
+        dob:{type:Date,default:null},
+        phone:{
+            type:Object,
+            properties:{
+                code:{type:String,required:true,default:"977"},
+                number:{type:String,required:true}
+            },
+            required:true,
+            default:null
+        },
         creation_date:{type:Date,require:true,default:Date.now()},
         gender: {type:String,enum:["Male","Female","Other","Prefer not to say"],default:"Prefer not to say"},
         metaData:{type:Object,require:false}

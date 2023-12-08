@@ -138,5 +138,7 @@ app.get("/user-email",async(req,res)=>{
     }
 })
 app.post("/address",AuthenticationToken,UserC.addAddress);
-
+app.patch("/address",AuthenticationToken,UserC.updateAddress);
+app.delete("/address",AuthenticationToken,UserC.deleteAddress);
+app.patch("/user",AuthenticationToken,UserC.updateUserInfo);
 module.exports = app

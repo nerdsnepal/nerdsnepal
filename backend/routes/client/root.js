@@ -7,6 +7,8 @@ const { VerifyTokenAndGetUser } = require("../../middleware/authToken")
 const {  getAllCategoryByStatus } = require("../../controller/category")
 const { getAllProductsyStatus, getProductById } = require("../../controller/product")
 const { addUserVisit } = require("../../controller/user.visits")
+const ProductS = require("../../services/product/product")
+const SeriesS = require("../../services/series/series")
 
 
 
@@ -21,13 +23,15 @@ app.get("/",VerifyTokenAndGetUser,async(req,res)=>{
         let products =await getAllProductsyStatus({userId})
         products = removeAttribute(products,['created_by','created_at','updated','costPrice','__v'])
         products = addTotalQuantityForProduct(products)
+        const series = await SeriesS.fetchAllSeries();
         const price = minMax(products)
         return res.status(200).json({
             success:true,
             data:{
                 price,
                 categories,
-                products
+                products,
+                series
             }
         })
 

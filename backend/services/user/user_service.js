@@ -1,3 +1,4 @@
+const { isEmpty } = require("../../common/utils");
 const Address = require("../../models/address");
 const userModel = require("../../models/userModel");
 
@@ -16,6 +17,34 @@ async addAddress({userId,address}){
         billing:address,
         delivery:address
     }).save()
+}
+async updateAddress({userId,billing,delivery,isDefault,_id}){
+    if(isDefault){
+        await Address.updateMany({userId},{default:false})
+    }
+    return await Address.updateOne({_id,userId},{
+        default:isDefault,
+        billing:{...billing},
+        delivery:{...delivery}
+    })
+}
+async deleteAddress({_id}){
+    return await Address.deleteOne({_id})
+}
+
+async updateUserInfo({userId,user}){
+    if(isEmpty(user.name)){
+        throw new Error("Name is required");
+    }
+    return await userModel.updateOne({_id:userId},{
+        $set:{
+            "name":user.name,
+            "gender":user.gender,
+            "dob":user.dob,
+            "phone.code":user.code,
+            "phone.number":user.number,
+        }
+    })
 }
 
 }

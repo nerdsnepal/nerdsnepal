@@ -26,6 +26,7 @@ const uploadRoute = require("./routes/upload/uploadMedia");
 const productRoute = require("./routes/admin/products");
 const adminSeriesRoute = require("./routes/admin/series");
 const trendingProductRoute = require("./routes/client/trending.products")
+const orderRoute = require("./routes/common/order")
 const {CheckAPIAcessToken} = require("./middleware/check_api_token");
 const { metaData } = require("./middleware/meta-data");
 // number of cpu or core available 
@@ -52,6 +53,7 @@ app.use('/assets/images',imageRoute);
 //app.use(CheckAPIAcessToken);
 //root 
 app.use('/',rootRoute)
+app.use('/order',orderRoute)
 app.use("/admin/create/",createAdminRoute);
 app.use("/admin/series",adminSeriesRoute)
 app.use("/store",storeRoute);

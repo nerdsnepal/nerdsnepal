@@ -1,4 +1,5 @@
 const bcrypt = require("bcrypt")
+const crypto = require('crypto');
 const  USERTYPE = {
     DEFAULT:"user",
     EMPLOYEE:"employee",
@@ -59,7 +60,11 @@ const comparePassword = async (password,hash)=> await  bcrypt.compare(password,h
 const isEmpty= (value)=> value===undefined||value===""||value==='null' ||value===null;
 
 const isSuperUser = (userType)=>userType === USERTYPE.SUPERUSER;
-
+const generateProductSignature = (products,userId)=>{
+    const data = {timestamp:Date.now,products,userId}
+    const signature = crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex');
+   return signature;
+}
 
 
 
@@ -69,5 +74,6 @@ module.exports = {generateHash,
     isEqual,generateCode,encryptPassword,
     SUBSCRIPTIONLEVEL,
     SUBSCRIPTIONMODEL,
+    generateProductSignature
     
 }

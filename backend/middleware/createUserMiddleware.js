@@ -2,7 +2,6 @@ const { emailValidator, validateUserName, isEqual, passwordStrengthChecker, isEm
 const User = require("../models/userModel")
 
 const UserValidationChecker = async(req,res,next) =>{
-    console.log(req);
     const {fullname,username,email,password,confirmPassword} = req.body
     let error = []
     if(isEmpty(fullname))error.push("Name is required field")

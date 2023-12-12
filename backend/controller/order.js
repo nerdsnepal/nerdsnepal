@@ -1,6 +1,8 @@
-const { valid } = require("joi");
+
 const OrderS = require("../services/order/order");
 const order_validator = require("../validation/order_validator");
+const CancellationS = require("../services/order/cancellation");
+const RatingS = require("../services/product/rating");
 
 
 class Order{
@@ -76,9 +78,12 @@ class Order{
         try {
             const {userId} = req.user;
             const {orderId} = req.query;
-            const result = await OrderS.getOrderDetailsById({userId,orderId})
-            console.log(result);
-            res.status(200).json({success:true,data:result})
+            let result = await OrderS.getOrderDetailsById({userId,orderId})
+            const cancellation = await CancellationS.getCancellationByOrderId({orderId,userId})??[]
+           const reviews = await RatingS.getRateByuserId({userId,orderId})
+            console.log(reviews);
+            
+            res.status(200).json({success:true,data:{...result._doc,cancellation,reviews}})
         } catch (error) {
             res.status(500).json({
                 success:false,

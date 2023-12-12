@@ -9,6 +9,7 @@ const { getAllProductsyStatus, getProductById } = require("../../controller/prod
 const { addUserVisit } = require("../../controller/user.visits")
 const ProductS = require("../../services/product/product")
 const SeriesS = require("../../services/series/series")
+const RatingS = require("../../services/product/rating")
 
 
 
@@ -55,6 +56,9 @@ app.get("/v2/product",VerifyTokenAndGetUser,async(req,res)=>{
             })
         }
         let product =await getProductById({userId,status:true,_id})
+        const rating = await RatingS.getAverageRatingByProductId(product._id)
+        const reviews = await RatingS.getReviews({productId:product._id})
+        product.rating=rating;
         if(product){
             product = removeAttribute([product],['created_by','returns_count','sales_count','created_at','updated','costPrice','__v','views_count'])
             product = addTotalQuantityForProduct(product)[0]
@@ -63,7 +67,7 @@ app.get("/v2/product",VerifyTokenAndGetUser,async(req,res)=>{
       await addUserVisit({userId,productId:_id,meta:meta})
         return res.status(200).json({
             success:true,
-            data:product
+            data:{...product._doc,reviews}
         })
 
     } catch (error) {

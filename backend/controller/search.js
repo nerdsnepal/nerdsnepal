@@ -5,7 +5,7 @@ const productModel = require("../models/productModel");
 exports.searchProducts=async(query)=> {
     try {
        query= query.replace(/[^a-zA-Z0-9- ]/g, "")
-       console.log(query);
+       //console.log(query);
       let products = await productModel.find({
         $or: [
           { name: { $regex: query, $options: 'i' } }, 

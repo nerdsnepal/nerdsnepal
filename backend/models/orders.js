@@ -12,6 +12,7 @@ const orderSchema = new mongoose.Schema({
     ref: 'user',
     required: true,
   },
+ 
   products: [
     {
       name: {
@@ -60,22 +61,22 @@ const orderSchema = new mongoose.Schema({
     default: 'Pending',
   },
   billingAddress: {
-    address1: String,
-    city: String,
-    fullName:String,
-    phoneNumber:String,
-    state: String,
+    address1: {type:String,required:true},
+    city:  {type:String,required:true},
+    fullName: {type:String,required:true},
+    phoneNumber: {type:String,required:true},
+    state:  {type:String,required:true},
     landmark: String,
-    country: String,
+    country:  {type:String,required:true},
   },
   deliveryAddress: {
-    address1: String,
-    fullName:String,
-    city: String,
-    phoneNumber:String,
-    state: String,
+    address1:  {type:String,required:true},
+    fullName: {type:String,required:true},
+    city:  {type:String,required:true},
+    phoneNumber: {type:String,required:true},
+    state:  {type:String,required:true},
     landmark: String,
-    country: String,
+    country:  {type:String,required:true},
   },
   paymentMethod: {
     type: String,

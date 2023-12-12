@@ -25,6 +25,7 @@ const searchRoute = require("./routes/common/search");
 const uploadRoute = require("./routes/upload/uploadMedia");
 const productRoute = require("./routes/admin/products");
 const adminSeriesRoute = require("./routes/admin/series");
+const ratingRoute =require("./routes/client/rating")
 const trendingProductRoute = require("./routes/client/trending.products")
 const orderRoute = require("./routes/common/order")
 const {CheckAPIAcessToken} = require("./middleware/check_api_token");
@@ -66,7 +67,7 @@ app.use("/user/profile",userAvatarRoute);
 app.use("/search",searchRoute);
 app.use("/upload",uploadRoute);
 app.use("/trending/",trendingProductRoute)
-
+app.use("/rating/",ratingRoute)
 
 app.post("/media",AuthenticationToken,uploadProductMedia,async(req,res)=>{
     const files = req.files;

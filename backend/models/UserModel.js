@@ -17,7 +17,6 @@ const UserSchema = new mongoose.Schema(
                 code:{type:String,required:true,default:"977"},
                 number:{type:String,required:true}
             },
-            required:true,
             default:null
         },
         creation_date:{type:Date,require:true,default:Date.now()},

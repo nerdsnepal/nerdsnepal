@@ -30,6 +30,7 @@ app.post("/create-user",UserValidationChecker,async(req,res)=>{
            return res.status(200).json({success:true,userDetails:other,isSendVerificationMail:emailVerifier!=null?true:false,message:"Thanks for creating your account. Please verify your email."})
         }
     } catch (error) {
+        console.log(error);
        return res.status(201).json({success:false,...error})
     }
 })

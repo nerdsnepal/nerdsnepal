@@ -13,7 +13,6 @@ app.post('/',AuthenticationToken,StoreAuthorization,AddProductMiddleware,async(r
   
     try {
         let result = null 
-
         const {role} = req.user 
        const {product} =req
     //   console.log(req);

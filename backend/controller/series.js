@@ -41,7 +41,7 @@ class SeriesController{
             const {storeId,seriesId} =req.body;
             const {userId}=req.user;
             const data= await SeriesS.deleteSeries({storeId,userId,seriesId})
-            console.log(data);
+           // console.log(data);
             return res.status(200).json({success:true,message:"Deleted"})
         } catch (error) {
            return res.status(500).json({success:false,message:error.message})

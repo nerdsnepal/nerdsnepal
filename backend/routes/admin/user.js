@@ -1,7 +1,7 @@
-const UserValidationChecker = require("../../middleware/createUserMiddleware")
-const EmailVerifier = require("../../models/EmailVerifierModel")
-const User = require("../../models/userModel")
-const { sendVerificationMail } = require("../../services/mail/sendMail")
+const UserValidationChecker = require("../../middleware/create-user-middleware")
+const EmailVerifier = require("../../models/email-verifier-model")
+const User = require("../../models/user-model")
+const { sendVerificationMail } = require("../../services/mail/sendmail")
 const { isEqual, encryptPassword, generateCode, USERTYPE } = require("../../common/utils")
 
 

@@ -14,6 +14,18 @@ class RatingController{
         res.status(500).json({success:false,error:error.message})
      }
     }
+    async getReview(req,res){
+      try {
+         const {productId} = req.query; 
+         const result = await RatingS.getReviews({productId})
+         console.log(result);
+         return res.status(200).json({success:true,data:result})
+      } catch (error) {
+         console.log(error);
+         res.status(500).json({success:false,error:error.message})
+      }
+    }
+    
 
 }
 const RatingC = new RatingController()

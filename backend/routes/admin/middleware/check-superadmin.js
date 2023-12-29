@@ -1,5 +1,5 @@
 const { USERTYPE } = require("../../../common/utils")
-const userModel = require("../../../models/userModel")
+const userModel = require("../../../models/user-model")
 /*
 This middleware check whether the user is admin or not
 If the user is not admin then it send failure response, otherwise 

@@ -1,8 +1,8 @@
 const { isEmpty, USERTYPE } = require("../../common/utils");
-const { AuthenticationToken } = require("../../middleware/authToken");
-const { uploadProductMedia, compressAndReturnUrlMiddleware } = require("../../middleware/uploadMiddleware");
-const CategoryModel = require("../../models/CategoryModel");
-const Category = require("../../models/CategoryModel");
+const { AuthenticationToken } = require("../../middleware/auth-token");
+const { uploadProductMedia, compressAndReturnUrlMiddleware } = require("../../middleware/upload-middleware");
+const CategoryModel = require("../../models/categorymodel");
+const Category = require("../../models/categorymodel");
 const { StoreAuthorization } = require("./store/middleware/check-authorization");
 const app = require("express").Router()
 

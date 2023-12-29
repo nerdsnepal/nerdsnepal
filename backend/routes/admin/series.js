@@ -1,5 +1,5 @@
 const Series = require("../../controller/series")
-const { AuthenticationToken } = require("../../middleware/authToken")
+const { AuthenticationToken } = require("../../middleware/auth-token")
 
 const app = require("express").Router()
 

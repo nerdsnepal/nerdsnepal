@@ -1,6 +1,6 @@
 const { addTotalQuantityForProduct } = require("../common/products");
 const { removeAttribute } = require("../common/user.hide.secrete");
-const productModel = require("../models/productModel");
+const productModel = require("../models/product-model");
 
 
 

@@ -1,5 +1,5 @@
 const { emailValidator, validateUserName, isEqual, passwordStrengthChecker, isEmpty } = require("../common/utils");
-const User = require("../models/userModel")
+const User = require("../models/user-model")
 
 const UserValidationChecker = async(req,res,next) =>{
     const {fullname,username,email,password,confirmPassword} = req.body

@@ -1,11 +1,11 @@
-const { AuthenticationToken } = require("../../middleware/authToken")
-const { uploadProductMedia, compressAndReturnUrlMiddleware, uploadStoreLogo } = require("../../middleware/uploadMiddleware")
-const MediaModel = require("../../models/MediaModel")
+const { AuthenticationToken } = require("../../middleware/auth-token")
+const { uploadProductMedia, compressAndReturnUrlMiddleware, uploadStoreLogo } = require("../../middleware/upload-middleware")
+const MediaModel = require("../../models/media-model")
 const fs = require("fs")
 const { StoreAuthorization } = require("../admin/store/middleware/check-authorization")
 const app = require("express").Router()
-const SharedEventEmitter = require("../../common/sharedEventEmitter")
-const StoreModel = require("../admin/store/model/StoreModel")
+const SharedEventEmitter = require("../../common/shared-event-emitter")
+const StoreModel = require("../admin/store/model/storemodel")
 /*
     Only the authenticated user can upload the file 
     and the middleware compress the file and return the corresponding 

@@ -1,7 +1,5 @@
-const SeriesModel = require("../../models/seriesModel");
-
+const SeriesModel = require("../../models/series-model");
 class SeriesService{
-
     async createSeries({name,images,status,userId,storeId}){
         if(await SeriesModel.findOne({storeId,name})){
             throw new Error("Series already exists")

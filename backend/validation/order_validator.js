@@ -23,7 +23,7 @@ const orderSchema = Joi.object({
     fullName: Joi.string(),
     phoneNumber: Joi.string(),
     state: Joi.string(),
-    landmark: Joi.string(),
+    landmark: Joi.string().allow(''),
     country: Joi.string(),
   }),
 
@@ -33,7 +33,7 @@ const orderSchema = Joi.object({
     city: Joi.string(),
     phoneNumber: Joi.string(),
     state: Joi.string(),
-    landmark: Joi.string(),
+    landmark: Joi.string().allow(''),
     country: Joi.string(),
     label:Joi.string(),
   }),

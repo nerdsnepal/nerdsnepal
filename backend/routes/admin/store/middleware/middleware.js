@@ -1,5 +1,5 @@
 const { isEmpty } = require("../../../../common/utils")
-const StoreModel = require("../model/StoreModel")
+const StoreModel = require("../model/storemodel")
 
 /* This middleware is use to check the required information is submitted or not */
 const CreateStoreValidatorMiddleware =async (req,res,next)=>{

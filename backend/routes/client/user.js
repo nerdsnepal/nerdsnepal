@@ -1,15 +1,15 @@
 
-const { HandleEmailPasswordReset, HandleUsernamePasswordReset, VerifyCode, ResetPassword, EmailVerifyCode } = require("../../middleware/HandlePasswordReset");
-const AuthMiddleware = require("../../middleware/authMiddleware");
-const UserValidationChecker = require("../../middleware/createUserMiddleware");
-const EmailVerifier = require("../../models/EmailVerifierModel");
-const User = require("../../models/userModel");
-const { sendVerificationMail } = require("../../services/mail/sendMail");
+const { HandleEmailPasswordReset, HandleUsernamePasswordReset, VerifyCode, ResetPassword, EmailVerifyCode } = require("../../middleware/handle-password-reset");
+const AuthMiddleware = require("../../middleware/auth-middleware");
+const UserValidationChecker = require("../../middleware/create-user-middleware");
+const EmailVerifier = require("../../models/email-verifier-model");
+const User = require("../../models/user-model");
+const { sendVerificationMail } = require("../../services/mail/sendmail");
 const { generateCode, encryptPassword, url } = require("../../common/utils");
-const userModel = require("../../models/userModel");
+const userModel = require("../../models/user-model");
 const { PasswordResetService } = require("../../services/other/otherservices");
-const passwordResetModel = require("../../models/passwordResetModel");
-const { generateAuthToken, AuthenticationToken } = require("../../middleware/authToken");
+const passwordResetModel = require("../../models/password-reset-model");
+const { generateAuthToken, AuthenticationToken } = require("../../middleware/auth-token");
 const UserC = require("../../controller/user_controller");
 
 
@@ -30,7 +30,7 @@ app.post("/create-user",UserValidationChecker,async(req,res)=>{
            return res.status(200).json({success:true,userDetails:other,isSendVerificationMail:emailVerifier!=null?true:false,message:"Thanks for creating your account. Please verify your email."})
         }
     } catch (error) {
-        console.log(error);
+        
        return res.status(201).json({success:false,...error})
     }
 })

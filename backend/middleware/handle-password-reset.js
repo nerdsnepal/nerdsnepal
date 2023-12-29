@@ -1,8 +1,8 @@
-const PasswordReset = require("../models/passwordResetModel");
-const User = require("../models/userModel")
+const PasswordReset = require("../models/password-reset-model");
+const User = require("../models/user-model")
 const { PasswordResetService } = require("../services/other/otherservices");
 const { isEmpty, isEqual, passwordStrengthChecker, encryptPassword } = require("../common/utils");
-const { generateAuthToken } = require("./authToken");
+const { generateAuthToken } = require("./auth-token");
 
 const HandleEmailPasswordReset = async(req,res,next)=>{
     const {email,isEmail}= req.body

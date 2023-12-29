@@ -1,8 +1,8 @@
 const { checkExistsAndDelete } = require("../../common/compress")
 const { addTotalQuantityForProduct, removeSensativeContent } = require("../../common/products")
 const { USERTYPE, isEmpty } = require("../../common/utils")
-const { AuthenticationToken } = require("../../middleware/authToken")
-const productModel = require("../../models/productModel")
+const { AuthenticationToken } = require("../../middleware/auth-token")
+const productModel = require("../../models/product-model")
 const { AddProductMiddleware } = require("./middleware/product-add-middleware")
 const { StoreAuthorization } = require("./store/middleware/check-authorization")
 
@@ -162,6 +162,27 @@ app.patch('/description',AuthenticationToken,StoreAuthorization,async(req,res)=>
         const {acknowledged} =await  productModel.updateOne({_id:productId,storeId:storeId},{
             description,$push:{updated:updateHistory}
         })
+        return res.status(200).json({success:acknowledged,message:acknowledged?"Updated":"Failed to update"})
+    } catch (error) {
+        return res.status(500).json({success:false,error})
+    }
+})
+//update description
+app.patch('/quantities',AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {quantities,storeId,productId} = req.body 
+    const {userId} = req.user 
+    const canAccess = true 
+    try {
+        if(isEmpty(quantities)){
+            return res.status(422).json({success:false,message:"Description  is required"})
+        }
+        if(!canAccess){
+            return res.status(401).json({success:false,message:"Unauthozied"})
+        }
+        const {acknowledged} =await  productModel.updateOne({_id:productId,storeId:storeId},{
+            $set:{'inventory.quantities':quantities}
+        })
+        console.log(acknowledged);
         return res.status(200).json({success:acknowledged,message:acknowledged?"Updated":"Failed to update"})
     } catch (error) {
         return res.status(500).json({success:false,error})

@@ -15,7 +15,7 @@ const addressSchema = new mongoose.Schema(
       state: { type: String, required: true },
       country: { type: String, required: true },
       phoneNumber: { type: String, required: true },
-      landmark:{type:String,required:true,default:""}
+      landmark:{type:String,required:false,default:""}
     },
     delivery: {
       fullName: { type: String, required: true },
@@ -24,7 +24,7 @@ const addressSchema = new mongoose.Schema(
       state: { type: String, required: true },
       country: { type: String, required: true },
       phoneNumber: { type: String, required: true },
-      landmark:{type:String,required:true,default:""},
+      landmark:{type:String,required:false,default:""},
       label:{type:String,enum:["Home","Office"],default:"Home",required:true},
     },
   },

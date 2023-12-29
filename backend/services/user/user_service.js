@@ -1,6 +1,6 @@
 const { isEmpty } = require("../../common/utils");
 const Address = require("../../models/address");
-const userModel = require("../../models/userModel");
+const userModel = require("../../models/user-model");
 
 class UserService {
 

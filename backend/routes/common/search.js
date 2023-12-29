@@ -1,6 +1,6 @@
 
-const {  VerifyTokenAndGetUser } = require("../../middleware/authToken")
-const userModel = require("../../models/userModel")
+const {  VerifyTokenAndGetUser } = require("../../middleware/auth-token")
+const userModel = require("../../models/user-model")
 const { isEmpty } = require("../../common/utils")
 const userSearchModel = require("../../models/user.search.model")
 const { searchProducts } = require("../../controller/search")

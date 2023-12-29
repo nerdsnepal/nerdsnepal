@@ -2,7 +2,7 @@
 //all the permission is handle here 
 
 const { USERTYPE, isEmpty } = require("../../../../common/utils")
-const StoreModel = require("../model/StoreModel")
+const StoreModel = require("../model/storemodel")
 
 
 const StoreAuthorization =async(req,res,next)=>{

@@ -1,8 +1,8 @@
 const { checkExistsAndDelete, compressImageAndSave } = require("../../common/compress");
 const { isEmpty } = require("../../common/utils");
-const { AuthenticationToken } = require("../../middleware/authToken");
-const { uploadProfile, compressAndReturnUrlMiddleware } = require("../../middleware/uploadMiddleware");
-const userModel = require("../../models/userModel");
+const { AuthenticationToken } = require("../../middleware/auth-token");
+const { uploadProfile, compressAndReturnUrlMiddleware } = require("../../middleware/upload-middleware");
+const userModel = require("../../models/user-model");
 const app = require("express").Router()
 
 

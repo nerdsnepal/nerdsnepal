@@ -1,4 +1,4 @@
-const { VerifyTokenAndGetUser } = require("../../middleware/authToken")
+const { VerifyTokenAndGetUser } = require("../../middleware/auth-token")
 const { trendProductBasedOnViews } = require("../../controller/product.trend")
 
 const app = require("express").Router()

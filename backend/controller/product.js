@@ -1,4 +1,4 @@
-const productModel = require("../models/productModel")
+const productModel = require("../models/product-model")
 
 
 exports.getAllProductsyStatus =async ({userId,status=true})=>{

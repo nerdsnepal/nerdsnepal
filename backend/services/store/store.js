@@ -1,8 +1,8 @@
-const StoreModel = require("../../routes/admin/store/model/StoreModel");
+const StoreModel = require("../../routes/admin/store/model/storemodel");
 
 class StoreService {
     async getById({storeId}){
-        return StoreModel.findOne({_id:storeId},'created_by creation_date name displayName emails logo address')
+        return StoreModel.findOne({_id:storeId},'created_by creation_date name displayName about emails logo address')
     }
 
 

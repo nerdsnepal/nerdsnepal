@@ -2,9 +2,9 @@
 email or username and password 
 */
 const app  = require("express").Router()
-const AuthMiddleware = require("../../middleware/authMiddleware")
-const { generateAuthToken } = require("../../middleware/authToken")
-const User = require("../../models/userModel")
+const AuthMiddleware = require("../../middleware/auth-middleware")
+const { generateAuthToken } = require("../../middleware/auth-token")
+const User = require("../../models/user-model")
 const { comparePassword, isEmpty } = require("../../common/utils")
 
 app.post("/email-login",AuthMiddleware,async(req,res)=>{
@@ -25,9 +25,9 @@ app.post("/email-login",AuthMiddleware,async(req,res)=>{
         }
         if(await comparePassword(password,currentUser.password)){
             let token = generateAuthToken({userId:currentUser._id,username:currentUser.username,
-               email:currentUser.email,role:currentUser.role})
+               email:currentUser.email,role:currentUser.role},'30d')
                 const cookieOptions = {
-                expires: new Date(Date.now() + 1000 * 60 * 60 * 24), 
+                expires: new Date(Date.now() + 30 * 60 * 60 * 24), 
                 httpOnly: true, // prevents JavaScript from accessing the cookie
                 secure:true,
                 sameSite: "none",

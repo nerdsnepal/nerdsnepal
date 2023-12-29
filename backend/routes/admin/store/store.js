@@ -1,13 +1,13 @@
 
 const { USERTYPE, SUBSCRIPTIONLEVEL, SUBSCRIPTIONMODEL, isEmpty } = require("../../../common/utils")
 const Store = require("../../../controller/store")
-const { AuthenticationToken } = require("../../../middleware/authToken")
-const userModel = require("../../../models/userModel")
-const CheckSuperAdmin = require("../middleware/checkSuperAdmin")
+const { AuthenticationToken } = require("../../../middleware/auth-token")
+const userModel = require("../../../models/user-model")
+const CheckSuperAdmin = require("../middleware/check-superadmin")
 const { StoreAuthorization } = require("./middleware/check-authorization")
 const { CreateStoreValidatorMiddleware } = require("./middleware/middleware")
 const { StockLocationRequiredFieldChecker } = require("./middleware/store-location")
-const StoreModel = require("./model/StoreModel")
+const StoreModel = require("./model/storemodel")
 
 const router = require("express").Router()
 
@@ -158,6 +158,15 @@ router.patch("/stocklocation",AuthenticationToken,StoreAuthorization,async(req,r
 
 })
 
+router.patch("/about",AuthenticationToken,StoreAuthorization,async(req,res)=>{
+    const {about,storeId} = req.body  
+    try {
+         await StoreModel.updateOne({_id:storeId}, {about} )
+         return res.status(200).json({success:true,message:"Updated"})   
+    } catch (error) {
+        return res.status(500).json({success:false,error:error.message})
+    }
+})
 
 // update 
 router.patch("/name",AuthenticationToken,StoreAuthorization,async(req,res)=>{

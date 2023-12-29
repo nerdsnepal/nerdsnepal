@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose")
-const productModel = require("../../models/productModel")
+const productModel = require("../../models/product-model")
 const Rating = require("../../models/rating")
 
 class RatingService {
@@ -46,7 +46,8 @@ class RatingService {
         return await Rating.find({userId,orderId})
     }
    async getReviews({productId}){
-    return await Rating.find({productId})
+    return await Rating.find({productId:productId})
+    .populate("userId","_id name profile")
    }
    async  getAverageRatingByProductId(productId) {
     try {

@@ -1,6 +1,6 @@
 const { removeAttribute } = require("../common/user.hide.secrete")
 const { isEmpty } = require("../common/utils")
-const StoreModel = require("../routes/admin/store/model/StoreModel")
+const StoreModel = require("../routes/admin/store/model/storemodel")
 const ProductS = require("../services/product/product")
 const StoreS = require("../services/store/store")
 

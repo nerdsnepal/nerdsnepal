@@ -2,7 +2,7 @@
 const { default: mongoose } = require("mongoose")
 const { addTotalQuantityForProduct } = require("../../common/products")
 const { removeAttribute } = require("../../common/user.hide.secrete")
-const { VerifyTokenAndGetUser } = require("../../middleware/authToken")
+const { VerifyTokenAndGetUser } = require("../../middleware/auth-token")
 const { getAllProductByStoreId, findProductsByCategory } = require("../../controller/product")
 const { storeById } = require("../../controller/store")
 const Store = require("../../controller/store")

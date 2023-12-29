@@ -11,18 +11,18 @@ const createAdminRoute = require("./routes/admin/user");
 const userAccountRoute = require("./routes/client/user");
 const userAuthRoute = require("./routes/client/auth");
 const categoryRoute = require("./routes/admin/category");
-const { uploadProductMedia } = require("./middleware/uploadMiddleware");
-const { AuthenticationToken } = require("./middleware/authToken");
+const { uploadProductMedia } = require("./middleware/upload-middleware");
+const { AuthenticationToken } = require("./middleware/auth-token");
 const path = require("path");
 const { compressImageAndSave} = require("./common/compress");
-const imageRoute = require("./routes/common/imageRoute");
-const userAvatarRoute = require("./routes/common/userProfile");
+const imageRoute = require("./routes/common/imageroute");
+const userAvatarRoute = require("./routes/common/userprofile");
 const cors = require("cors");
 const rootRoute = require("./routes/client/root")
 const productClientRoute = require("./routes/client/products")
 const storeRoute = require("./routes/admin/store/store");
 const searchRoute = require("./routes/common/search");
-const uploadRoute = require("./routes/upload/uploadMedia");
+const uploadRoute = require("./routes/upload/uploadmedia");
 const productRoute = require("./routes/admin/products");
 const adminSeriesRoute = require("./routes/admin/series");
 const ratingRoute =require("./routes/client/rating")
@@ -88,6 +88,7 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING).then(()=>{
     console.log("Connection successful");
 })
 .catch((err)=>{
+    console.log(err.message);
     console.log("Connection failed");
 });
 

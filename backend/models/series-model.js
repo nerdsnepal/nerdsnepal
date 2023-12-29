@@ -20,6 +20,6 @@ const SeriesSchema = mongoose.Schema({
     creation_date:{type:Date,default:Date.now()}   
 })
 
-const SeriesModel = mongoose.model("series",SeriesSchema)
+const SeriesModel = mongoose.model("series",SeriesSchema);
 
-module.exports = SeriesModel
+module.exports = SeriesModel;

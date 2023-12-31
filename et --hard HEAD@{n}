@@ -1,0 +1,31 @@
+[33m3ca14f3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m HEAD@{0}: commit: For testing
+[33mc6f1c47[m HEAD@{1}: commit: Added order detail and review
+[33m5e1dea8[m HEAD@{2}: commit: Added .env file
+[33md70aeef[m HEAD@{3}: commit: Checkout and order details
+[33m1e993de[m HEAD@{4}: commit: Added series
+[33m11db1b9[m HEAD@{5}: commit: Added store page
+[33maf7b4b3[m HEAD@{6}: commit: Added checkout page
+[33mefe5dda[m HEAD@{7}: commit: Added email verification featuer
+[33m2bd2ea2[m HEAD@{8}: commit: Added sitemap
+[33mb6f42b1[m HEAD@{9}: commit: Added 404
+[33m85406db[m HEAD@{10}: commit: Added pagination
+[33m4c028f8[m HEAD@{11}: commit: Updated shop-by-series feature
+[33md3a780a[m HEAD@{12}: commit: Added shop by series and breadcrumbs
+[33m565b918[m HEAD@{13}: commit: Added checkout
+[33mcce4bf9[m HEAD@{14}: commit: Added cart view
+[33m3798f19[m HEAD@{15}: commit: Added cart view, user menu
+[33mc42c3d9[m HEAD@{16}: commit: Added search bar,product filter and other
+[33mda4e269[m HEAD@{17}: commit: Added navbar,register,login,rest pages
+[33m234dc81[m HEAD@{18}: commit: Enhance UI with loading shimmer effect
+[33m00226a1[m HEAD@{19}: commit: Added product view page and store edit feature
+[33me8018f1[m HEAD@{20}: commit: Can view and add products
+[33me888a44[m HEAD@{21}: commit: Added Category feature
+[33m25ded5c[m HEAD@{22}: commit: Added more column in store
+[33m9e53c3e[m HEAD@{23}: commit: Implementation of Create Store
+[33m732fb8d[m HEAD@{24}: commit: Fixed Auth Problem
+[33m577c1d7[m HEAD@{25}: commit: Added react-redux for global state management
+[33mbf7b6ca[m HEAD@{26}: commit: Added responsive login page
+[33m057efda[m HEAD@{27}: commit: Added manifest file and created a responsive navbar
+[33m0776256[m HEAD@{28}: commit: Added middlware, admin sidenavbar
+[33mc8cf01e[m HEAD@{29}: Branch: renamed refs/heads/master to refs/heads/main
+[33mc8cf01e[m HEAD@{31}: commit (initial): Initial commit from Create Next App
